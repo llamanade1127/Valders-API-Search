@@ -1,0 +1,15 @@
+
+
+<div class="button-container">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <mat-card>
+
+    <mat-card-title>
+      Settings
+    </mat-card-title>
+    <mat-card-content>
+      <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()">Re-Link Students</button>
+      <button mat-raised-button [disabled]="loading" class= "button" color="warn">Shut Down Server</button>
+    </mat-card-content>
+  </mat-card>
+</div>
