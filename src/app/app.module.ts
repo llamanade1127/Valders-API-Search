@@ -19,6 +19,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { StudentDataComponent } from './student-data/student-data.component';
 import { UserDataComponent } from './user-data/user-data.component';
+import { ShellComponent } from './shell/shell.component';
+import {MatSidenavModule} from "@angular/material/sidenav";
+import { SettingsPageComponent } from './settings-page/settings-page.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { UserDataComponent } from './user-data/user-data.component';
     ChromebookSearchComponent,
     ChromebookDataComponent,
     StudentDataComponent,
-    UserDataComponent
+    UserDataComponent,
+    ShellComponent,
+    SettingsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +48,7 @@ import { UserDataComponent } from './user-data/user-data.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatProgressBarModule,
+    MatSidenavModule
 
   ],
   providers: [],

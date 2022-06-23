@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>
+      <h3>User: {{user.id}}</h3>
+    </mat-card-title>
+
+    <mat-card-content>
+      <div class="flex">
+        <mat-card>
+          <mat-card-title>Name</mat-card-title>
+          <mat-card-content>{{user.name.fullName}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>ID</mat-card-title>
+          <mat-card-content>{{user.id}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Emails</mat-card-title>
+          <mat-card-content *ngFor="let email of user.emails">{{email.address}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Suspended</mat-card-title>
+          <mat-card-content>{{user.suspended}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>OU</mat-card-title>
+          <mat-card-content>{{user.orgUnitPath}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Last Login Time</mat-card-title>
+          <mat-card-content>{{user.lastLoginTime}}</mat-card-content>
+        </mat-card>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
+
+</div>

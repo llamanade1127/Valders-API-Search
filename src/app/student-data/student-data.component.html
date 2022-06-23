@@ -1,0 +1,23 @@
+<div class="container">
+
+  <mat-card>
+    <mat-card-title>
+      <h3>Student: {{student.Name}}</h3>
+    </mat-card-title>
+
+    <mat-card-content>
+
+      <mat-card>
+        <mat-card-title>Tickets</mat-card-title>
+        <mat-card-content *ngFor="let ticket of student.Tickets">{{ticket}}</mat-card-content>
+      </mat-card>
+
+      <app-chromebook-data [chromebook]="student.Chromebook"></app-chromebook-data>
+      <app-user-data [user]="student.GInfo"></app-user-data>
+
+    </mat-card-content>
+  </mat-card>
+
+
+
+</div>

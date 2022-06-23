@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>
+      <h3>Chromebook: {{chromebook.serialNumber}}</h3>
+    </mat-card-title>
+
+    <mat-card-content>
+      <div class="flex">
+        <mat-card>
+          <mat-card-title>VASD</mat-card-title>
+          <mat-card-content>{{chromebook.annotatedAssetId}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Serial Number</mat-card-title>
+          <mat-card-content>{{chromebook.serialNumber}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Last User</mat-card-title>
+          <mat-card-content>{{chromebook.recentUsers[0].email}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>OU</mat-card-title>
+          <mat-card-content>{{chromebook.orgUnitPath}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>Model</mat-card-title>
+          <mat-card-content>{{chromebook.model}}</mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-title>MAC Address</mat-card-title>
+          <mat-card-content>{{chromebook.macAddress}}</mat-card-content>
+        </mat-card>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
+
+</div>

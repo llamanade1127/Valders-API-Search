@@ -1,0 +1,77 @@
+<!--Search Bar, Output page on right-->
+
+<div class="progress-bar-container">
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+</div>
+<div class="container">
+
+
+    <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search For</mat-label>
+        <mat-select formControlName="search">
+          <mat-option value="student">Student</mat-option>
+          <mat-option value="user">Google User</mat-option>
+          <mat-option value="chromebook">Chromebook</mat-option>
+          <mat-option value="all">All</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+        <mat-form-field appearance="fill" *ngIf="search?.value != ''">
+            <mat-label>Search Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="VASD" *ngIf="search?.value == 'chromebook'">VASD Code</mat-option>
+              <mat-option value="SERIAL"*ngIf="search?.value == 'chromebook'" >Serial Number</mat-option>
+
+              <mat-option value="email"*ngIf="search?.value == 'student' || search?.value == 'user'" >Email</mat-option>
+              <mat-option value="sid"*ngIf="search?.value == 'student' || search?.value == 'user'" >Student ID</mat-option>
+
+              <mat-option value="assignedChromebook" *ngIf="search?.value == 'student'">Assigned Chromebook SN</mat-option>
+              <mat-option value="name" *ngIf="search?.value == 'student'">Name</mat-option>
+
+            </mat-select>
+          <mat-hint align="end" *ngIf="search?.value == 'chromebook'">Either search by VASD or serial number</mat-hint>
+          <mat-hint align="end" *ngIf="search?.value == 'user'">Either search by Email or Student ID</mat-hint>
+          <mat-hint align="end" *ngIf="search?.value == 'student'">Either search by Email, Student ID, Name, or Chromebook Serial Number</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field [color]="code?.valid && 'accent'" *ngIf="search?.value != ''">
+            <input
+              matInput
+              formControlName="code"
+              type="text"
+              placeholder="Code"
+              autocomplete="off"
+            />
+
+            <mat-error *ngIf="code?.invalid">
+              You enter valid data
+            </mat-error>
+        </mat-form-field>
+
+
+        <button *ngIf="search?.value != ''"
+        mat-stroked-button
+        type="submit"
+        [disabled]="loading"
+        >
+        Search for {{search?.value}}
+        </button>
+
+    </form>
+
+    <div class="chromebook-data-container">
+        <div *ngIf="chromebook">
+            <app-chromebook-data [chromebook]="chromebook"></app-chromebook-data>
+        </div>
+      <div *ngIf="student">
+        <app-student-data [student]="student"></app-student-data>
+      </div>
+      <div *ngIf="user">
+        <app-user-data [user]="user"></app-user-data>
+      </div>
+
+    </div>
+</div>

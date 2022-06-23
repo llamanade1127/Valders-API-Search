@@ -1,0 +1,16 @@
+.flex {
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  max-width: 100% / 2;
+  mat-card-content {
+    mat-card {
+      margin: 10px;
+
+    }
+  }
+}
+
