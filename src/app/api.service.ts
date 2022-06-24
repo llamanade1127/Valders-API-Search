@@ -44,6 +44,24 @@ export class ApiService {
 
     return this.http.get<any>('http://localhost:3000/chromebooks/students/link', {headers})
   }
+
+  GetConfig(){
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.get<any>('http://localhost:3000/server/config', {headers})
+  }
+
+  UpdateConfig(data: any) {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.post<any>('http://localhost:3000/server/config', {data}, {headers})
+  }
 }
 
 export interface RecentUser {

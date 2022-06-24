@@ -8,8 +8,46 @@
       Settings
     </mat-card-title>
     <mat-card-content>
-      <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()">Re-Link Students</button>
-      <button mat-raised-button [disabled]="loading" class= "button" color="warn">Shut Down Server</button>
+      <div>
+        <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()">Re-Link Students</button>
+        <button mat-raised-button [disabled]="loading" class= "button" color="warn">Shut Down Server</button>
+      </div>
+      <div>
+        <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Value</mat-label>
+            <mat-select formControlName="index">
+              <mat-option *ngFor="let option of settingsOptions" value="{{option.split(':')[0]}}" >{{option}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field [color]="value?.valid && 'accent'" *ngIf="index?.value != ''">
+            <input
+              matInput
+              formControlName="value"
+              type="text"
+              placeholder="Value"
+              autocomplete="off"
+            />
+
+            <mat-error *ngIf="value?.invalid">
+              You enter valid data
+            </mat-error>
+          </mat-form-field>
+
+
+          <button
+                  mat-stroked-button
+                  type="submit"
+                  [disabled]="loading"
+          >
+            Update {{index?.value}} with {{value?.value}}?
+          </button>
+
+        </form>
+      </div>
+
     </mat-card-content>
   </mat-card>
 </div>

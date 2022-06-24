@@ -22,6 +22,7 @@ import { UserDataComponent } from './user-data/user-data.component';
 import { ShellComponent } from './shell/shell.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { SettingsPageComponent } from './settings-page/settings-page.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { SettingsPageComponent } from './settings-page/settings-page.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatProgressBarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatSnackBarModule
 
   ],
   providers: [],

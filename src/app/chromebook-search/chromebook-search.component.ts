@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ApiService, Chromebook, Student, User} from '../api.service';
+import {SnackBarService} from "../snack-bar.service";
 
 @Component({
   selector: 'app-chromebook-search',
@@ -22,7 +23,7 @@ export class ChromebookSearchComponent implements OnInit {
 
 
   loading = false;
-  constructor(private api: ApiService, private fb: FormBuilder) { }
+  constructor(private api: ApiService, private fb: FormBuilder, private snackBar: SnackBarService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -64,6 +65,7 @@ export class ChromebookSearchComponent implements OnInit {
           },
           error: error => {
             console.error("Error getting chromebook")
+            this.snackBar.error("Error getting chromebook.")
             this.loading = false;
           }
 
@@ -77,6 +79,8 @@ export class ChromebookSearchComponent implements OnInit {
           },
           error: error => {
             console.error("Error getting student")
+
+            this.snackBar.error(error.message)
             this.loading = false;
           }
         })
@@ -89,6 +93,7 @@ export class ChromebookSearchComponent implements OnInit {
           },
           error: error => {
             console.error("Error getting User")
+            this.snackBar.error("Error getting user.")
             this.loading = false;
           }
         })
