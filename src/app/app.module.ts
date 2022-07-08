@@ -23,6 +23,10 @@ import { ShellComponent } from './shell/shell.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { SettingsPageComponent } from './settings-page/settings-page.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import { StudentTableComponent } from './student-table/student-table.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     StudentDataComponent,
     UserDataComponent,
     ShellComponent,
-    SettingsPageComponent
+    SettingsPageComponent,
+    StudentTableComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     HttpClientModule,
     MatProgressBarModule,
     MatSidenavModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ClipboardModule,
+    MatPaginatorModule,
+    MatTableModule
 
   ],
   providers: [],

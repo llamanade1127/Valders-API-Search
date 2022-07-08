@@ -45,6 +45,15 @@ export class ApiService {
     return this.http.get<any>('http://localhost:3000/chromebooks/students/link', {headers})
   }
 
+  GetAllStudents(){
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.get<StudentArrayQueryReturn>('http://localhost:3000/chromebooks/students/', {headers})
+  }
+
   GetConfig(){
     let headers = {
       //TODO: Needs to be given by server for release build
@@ -388,4 +397,9 @@ export interface Student {
 export interface StudentQueryReturn {
   time: Date;
   student: Student;
+}
+
+export interface StudentArrayQueryReturn {
+  time: Date;
+  students: Student[];
 }
