@@ -7,14 +7,45 @@
 
     <mat-card-content>
 
-      <mat-card>
+      <mat-card *ngIf="student.Tickets.length > 0">
         <mat-card-title>Tickets</mat-card-title>
         <mat-card-content *ngFor="let ticket of student.Tickets">{{ticket}}</mat-card-content>
       </mat-card>
 
       <app-chromebook-data [chromebook]="student.Chromebook"></app-chromebook-data>
       <app-user-data [user]="student.GInfo"></app-user-data>
+      <mat-card>
+        <mat-card-title>
+          Return Data
+        </mat-card-title>
+        <mat-card-content class="return-container">
+          <p>
+            Returned Chromebook
+            <mat-checkbox [(ngModel)]="student.ReturnData.chromebook" (ngModelChange)="updateChromebook()"></mat-checkbox>
+          </p>
+          <p>
+            Returned Charger
+            <mat-checkbox [(ngModel)]="student.ReturnData.charger" (ngModelChange)="updateCharger()"></mat-checkbox>
+          </p>
+          <p>
+            Returned Chromebook
+            <mat-checkbox [(ngModel)]="student.ReturnData.case" (ngModelChange)="updateCase()"></mat-checkbox>
+          </p>
+          <p *ngIf="student.ReturnData.notes">Notes: {{student.ReturnData.notes}}</p>
+          <div>
+            Update Notes:
 
+            <form class="notes-form">
+              <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Notes</mat-label>
+                <textarea formControlName="Notes" matInput #Notes maxlength="256" placeholder="Ex. Case was damaged">{{student.ReturnData.notes}}</textarea>
+                <mat-hint align="end">{{Notes.value.length}} / 256</mat-hint>
+              </mat-form-field>
+            </form>
+
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-card-content>
   </mat-card>
 

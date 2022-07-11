@@ -386,11 +386,18 @@ export interface Chromebook {
   cpuInfo: CpuInfo[];
 }
 
+export interface ReturnData {
+  chromebook: boolean,
+  charger: boolean,
+  case: boolean,
+  notes?: string
+}
 export interface Student {
   GInfo: GInfo;
   Chromebook: Chromebook;
   Name: string;
   PrimaryEmail: string;
+  ReturnData: ReturnData
   Tickets: any[];
 }
 
