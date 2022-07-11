@@ -1,5 +1,5 @@
 <div class="container">
-
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <!--Tickets-->
   <mat-card *ngIf="student.Tickets.length > 0">
         <mat-card-title>Tickets</mat-card-title>
@@ -9,7 +9,8 @@
   <!--Chromebook-->
   <mat-card>
         <mat-card-title>
-          <h3>Chromebook: {{chromebook.serialNumber}}</h3>
+          <h3>Chromebook: {{chromebook.serialNumber}}<button mat-raised-button  style="margin-left: 30px" color="accent">Edit.</button></h3>
+
         </mat-card-title>
 
         <mat-card-content>
@@ -30,6 +31,7 @@
               </th>
               <td class="table-data">
                 {{chromebook.serialNumber}}
+                <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
               </td>
             </tr>
 
@@ -76,7 +78,8 @@
   <!--Google User-->
   <mat-card>
         <mat-card-title>
-          <h3>User: {{user.id}}</h3>
+          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px">Edit.</button></h3>
+
         </mat-card-title>
 
         <mat-card-content>
@@ -152,19 +155,18 @@
   <mat-card-content class="return-container">
     <p>
       Returned Chromebook
-      <mat-checkbox [(ngModel)]="student.ReturnData.chromebook" (ngModelChange)="updateChromebook()"></mat-checkbox>
+      <mat-checkbox [(ngModel)]="student.ReturnData.chromebook" [checked]="student.ReturnData.chromebook"></mat-checkbox>
     </p>
     <p>
       Returned Charger
-      <mat-checkbox [(ngModel)]="student.ReturnData.charger" (ngModelChange)="updateCharger()"></mat-checkbox>
+      <mat-checkbox [(ngModel)]="student.ReturnData.charger" ></mat-checkbox>
     </p>
     <p>
-      Returned Chromebook
-      <mat-checkbox [(ngModel)]="student.ReturnData.case" (ngModelChange)="updateCase()"></mat-checkbox>
+      Returned Case
+      <mat-checkbox [(ngModel)]="student.ReturnData.case"></mat-checkbox>
     </p>
-    <p *ngIf="student.ReturnData.notes">Notes: {{student.ReturnData.notes}}</p>
     <div>
-      Update Notes:
+      Notes:
 
       <form class="notes-form">
         <mat-form-field class="full-width" appearance="fill">
@@ -177,7 +179,7 @@
     </div>
 
     <div class="button-container">
-      <button mat-raised-button>Update Values</button>
+      <button mat-raised-button (click)="UpdateData()" color="accent">Update Values</button>
       <button mat-raised-button color="warn" routerLink="/">Return to search</button>
     </div>
   </mat-card-content>

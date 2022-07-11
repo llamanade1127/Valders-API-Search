@@ -30,9 +30,13 @@ export class StudentDataComponent implements OnInit {
 
        this.api.QueryStudent(this.studentID).subscribe({
          next: (student) => {
+           console.log(student)
            this.student = student.student;
            this.user = student.student.GInfo;
            this.chromebook = student.student.Chromebook;
+           console.log(this.student.ReturnData)
+
+
            this.foundStudent = true;
            this.loading = false;
          },
@@ -63,6 +67,18 @@ export class StudentDataComponent implements OnInit {
 
   updateCase() {
 
+  }
+
+  UpdateData() {
+    this.loading = true;
+    this.api.UpdateReturnParameters(this.student).subscribe({
+      next: data => {
+        this.loading = false;
+      },
+      error: err => {
+        this.snack.error(err);
+      }
+    });
   }
 
   get Notes(){

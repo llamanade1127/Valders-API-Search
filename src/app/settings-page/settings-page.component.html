@@ -14,28 +14,68 @@
       </div>
       <div>
         <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-container">
+
           <mat-form-field appearance="fill">
-            <mat-label>Value</mat-label>
-            <mat-select formControlName="index">
-              <mat-option *ngFor="let option of settingsOptions" value="{{option.split(':')[0]}}" >{{option}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-
-          <mat-form-field [color]="value?.valid && 'accent'" *ngIf="index?.value != ''">
+            <mat-label>Sheet ID</mat-label>
             <input
               matInput
-              formControlName="value"
+              formControlName="id"
               type="text"
-              placeholder="Value"
-              autocomplete="off"
-            />
-
-            <mat-error *ngIf="value?.invalid">
-              You enter valid data
-            </mat-error>
+              placeholder="ID"
+              autocomplete="off"/>
           </mat-form-field>
 
+          <mat-form-field appearance="fill">
+            <mat-label>Sheet Page</mat-label>
+            <input
+              matInput
+              formControlName="id"
+              type="text"
+              placeholder="ID"
+              autocomplete="off"/>
+          </mat-form-field>
+
+          <div class="4x4-grid">
+            <mat-form-field appearance="fill" class="grid-1">
+              <mat-label>Chromebook Serial Index</mat-label>
+              <input
+                matInput
+                formControlName="csi"
+                type="text"
+                placeholder="Serial Number"
+                autocomplete="off"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="grid-2">
+              <mat-label>Chromebook Returned Index</mat-label>
+              <input
+                matInput
+                formControlName="cri"
+                type="text"
+                placeholder="Returned Chromebook"
+                autocomplete="off"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="grid-3">
+              <mat-label>Sheet ID</mat-label>
+              <input
+                matInput
+                formControlName="id"
+                type="text"
+                placeholder="ID"
+                autocomplete="off"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="grid-4">
+              <mat-label>Sheet ID</mat-label>
+              <input
+                matInput
+                formControlName="id"
+                type="text"
+                placeholder="ID"
+                autocomplete="off"/>
+            </mat-form-field>
+          </div>
 
           <button
                   mat-stroked-button

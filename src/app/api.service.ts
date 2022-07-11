@@ -71,6 +71,44 @@ export class ApiService {
 
     return this.http.post<any>('http://localhost:3000/server/config', {data}, {headers})
   }
+
+  UpdateReturnParameters(student: Student) {
+    let sendData = this.ConvertFulltoReturnUser(student);
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    return this.http.patch(`http://localhost:3000/chromebooks/students/${student.GInfo.id}/update`,sendData, {headers: headers})
+
+  }
+
+  ConvertFulltoReturnUser(student: Student): ReturnStudent {
+    return {
+      userID: student.GInfo.id,
+      userAssignedChromebook: student.Chromebook.serialNumber,
+      userName: student.Name,
+      userEmail: student.GInfo.primaryEmail,
+      //@ts-ignore
+      userAssignedTickets: student.Tickets,
+      returnedChromebook: student.ReturnData.chromebook,
+      returnedCharger: student.ReturnData.charger,
+      returnedCase: student.ReturnData.case,
+      //@ts-ignore
+      returnNotes: student.ReturnData.notes,
+    }
+  }
+}
+
+export interface ReturnStudent{
+  userID: string;
+  userAssignedChromebook: string;
+  userName: string;
+  userEmail: string;
+  userAssignedTickets: [string];
+  returnedChromebook: boolean;
+  returnedCharger: boolean;
+  returnedCase: boolean;
+  returnNotes: string;
 }
 
 export interface RecentUser {
