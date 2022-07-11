@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ApiService, Chromebook, Student, User} from '../api.service';
 import {SnackBarService} from "../snack-bar.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-chromebook-search',
@@ -23,7 +24,7 @@ export class ChromebookSearchComponent implements OnInit {
 
 
   loading = false;
-  constructor(private api: ApiService, private fb: FormBuilder, private snackBar: SnackBarService) { }
+  constructor(private api: ApiService, private fb: FormBuilder, private snackBar: SnackBarService, private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -60,7 +61,8 @@ export class ChromebookSearchComponent implements OnInit {
         //@ts-ignore
         this.api.QueryChromebook(this.type?.value, this.code?.value).subscribe( {
           next: query => {
-            this.chromebook = query.chromebook;
+            //this.chromebook = query.chromebook;
+            this.router.navigate([`./chromebook/${query.chromebook.serialNumber}`])
             this.loading = false;
           },
           error: error => {
@@ -74,7 +76,9 @@ export class ChromebookSearchComponent implements OnInit {
       case 'student':
         this.api.QueryStudent(this.code?.value).subscribe({
           next: query => {
-            this.student = query.student;
+
+            this.router.navigate([`./student/${query.student.GInfo.id}`])
+
             this.loading = false;
           },
           error: error => {
@@ -88,7 +92,8 @@ export class ChromebookSearchComponent implements OnInit {
       case 'user':
         this.api.QueryUser(this.code?.value).subscribe({
           next: query => {
-            this.user = query.data;
+            this.router.navigate([`./user/${query.data.id}`])
+
             this.loading = false;
           },
           error: error => {

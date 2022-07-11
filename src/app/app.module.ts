@@ -27,6 +27,7 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import { StudentTableComponent } from './student-table/student-table.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,9 @@ import {MatTableModule} from "@angular/material/table";
     MatSnackBarModule,
     ClipboardModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule,
+    FormsModule
 
   ],
   providers: [],
