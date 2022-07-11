@@ -62,7 +62,7 @@ export class ChromebookSearchComponent implements OnInit {
         this.api.QueryChromebook(this.type?.value, this.code?.value).subscribe( {
           next: query => {
             //this.chromebook = query.chromebook;
-            this.router.navigate([`./chromebook/${query.chromebook.serialNumber}`])
+            this.router.navigateByUrl(`./chromebook/${query.chromebook.serialNumber}`)
             this.loading = false;
           },
           error: error => {
@@ -77,7 +77,7 @@ export class ChromebookSearchComponent implements OnInit {
         this.api.QueryStudent(this.code?.value).subscribe({
           next: query => {
 
-            this.router.navigate([`./student/${query.student.GInfo.id}`])
+            this.router.navigateByUrl(`/student/${query.student.GInfo.id}`)
 
             this.loading = false;
           },
@@ -92,7 +92,7 @@ export class ChromebookSearchComponent implements OnInit {
       case 'user':
         this.api.QueryUser(this.code?.value).subscribe({
           next: query => {
-            this.router.navigate([`./user/${query.data.id}`])
+            this.router.navigateByUrl(`./user/${query.data.id}`)
 
             this.loading = false;
           },

@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: '', component: ChromebookSearchComponent },
   { path: 'settings', component: SettingsPageComponent },
   { path: 'table', component: StudentTableComponent},
-  { path: 'students/:id', component: StudentDataComponent},
+  { path: 'student/:id', component: StudentDataComponent},
   { path: 'chromebook/:id', component:ChromebookDataComponent},
   { path: 'user/:id', component: UserDataComponent}
 ];

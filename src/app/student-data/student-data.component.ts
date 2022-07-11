@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApiService, Student} from "../api.service";
+import {ApiService, Chromebook, Student, User} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {SnackBarService} from "../snack-bar.service";
@@ -17,6 +17,10 @@ export class StudentDataComponent implements OnInit {
   foundStudent = true;
   //@ts-ignore
   @Input() student: Student
+  //@ts-ignore
+  chromebook: Chromebook;
+  //@ts-ignore
+  user: User;
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private api: ApiService, private snack: SnackBarService) { }
 
   ngOnInit(): void {
@@ -27,6 +31,8 @@ export class StudentDataComponent implements OnInit {
        this.api.QueryStudent(this.studentID).subscribe({
          next: (student) => {
            this.student = student.student;
+           this.user = student.student.GInfo;
+           this.chromebook = student.student.Chromebook;
            this.foundStudent = true;
            this.loading = false;
          },

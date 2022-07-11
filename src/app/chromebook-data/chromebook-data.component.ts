@@ -8,6 +8,7 @@ import {Chromebook} from "../api.service";
 })
 export class ChromebookDataComponent implements OnInit {
 
+
   //@ts-ignore
   @Input() chromebook: Chromebook;
   constructor() { }
