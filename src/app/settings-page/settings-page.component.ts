@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {SnackBarService} from "../snack-bar.service";
 
 @Component({
   selector: 'app-settings-page',
@@ -12,7 +13,7 @@ export class SettingsPageComponent implements OnInit {
   loading = false;
   //@ts-ignore
   form: FormGroup;
-  constructor(private api: ApiService, private fb: FormBuilder) { }
+  constructor(private api: ApiService, private fb: FormBuilder, private snack: SnackBarService) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -20,14 +21,7 @@ export class SettingsPageComponent implements OnInit {
       index: ['', [Validators.required]],
       value: ['', [Validators.required]],
     })
-
-    this.api.GetConfig().subscribe((config) => {
-      this.loading = true;
-      Object.keys(config).forEach((k) => {
-        this.settingsOptions.push(`${k}: ${config[k]}`)
-        this.loading = false;
-      })
-    })
+    this.loading = false;
   }
   get index() {
     //@ts-ignore
@@ -47,6 +41,19 @@ export class SettingsPageComponent implements OnInit {
         this.loading = false;
       },
       error: error => {
+        this.loading = false;
+      }
+    })
+  }
+  LinkStudentTickets(){
+    this.loading = true;
+    this.api.LinkTicketsToStudents().subscribe({
+      next: any => {
+        this.snack.error("Updated Tickets")
+        this.loading = false;
+      },
+      error: error => {
+        this.snack.error("Error updating tickets")
         this.loading = false;
       }
     })

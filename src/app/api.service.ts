@@ -18,13 +18,14 @@ export class ApiService {
     return this.http.get<QueryReturn>(`http://localhost:3000/chromebooks/${type}/${code}/info`, {headers})
   }
 
-  QueryUser(key: string): Observable<UserQueryReturn>{
+  QueryUser(key: string, type: string = "primaryEmail"): Observable<UserQueryReturn>{
+
     let headers = {
       //TODO: Needs to be given by server for release build
       'authorization': '123456'
     }
 
-    return this.http.get<UserQueryReturn>(`http://localhost:3000/chromebooks/users/${key}/info`, {headers})
+    return this.http.get<UserQueryReturn>(`http://localhost:3000/chromebooks/users/query?q=${type}&s=${key}`, {headers})
   }
 
   QueryStudent(key: string): Observable<StudentQueryReturn>{
@@ -69,7 +70,7 @@ export class ApiService {
       'authorization': '123456'
     }
 
-    return this.http.post<any>('http://localhost:3000/server/config', {data}, {headers})
+    return this.http.post<any>('http://localhost:3000/server/dasdfadsfsa', {data}, {headers})
   }
 
   UpdateReturnParameters(student: Student) {
@@ -82,6 +83,24 @@ export class ApiService {
 
   }
 
+  UpdateBySheets(UpdateQuery: ReturnInfoQuery) {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    return this.http.post(`http://localhost:3000/chromebooks/students/updateBySheets`,UpdateQuery, {headers: headers})
+
+  }
+
+  LinkTicketsToStudents() {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    return this.http.get(`http://localhost:3000/chromebooks/students/updateTicketParing`, {headers: headers})
+
+  }
+
   ConvertFulltoReturnUser(student: Student): ReturnStudent {
     return {
       userID: student.GInfo.id,
@@ -90,9 +109,9 @@ export class ApiService {
       userEmail: student.GInfo.primaryEmail,
       //@ts-ignore
       userAssignedTickets: student.Tickets,
-      returnedChromebook: student.ReturnData.chromebook,
-      returnedCharger: student.ReturnData.charger,
-      returnedCase: student.ReturnData.case,
+      returnedChromebook: student.ReturnData.collectedChromebook,
+      returnedCharger: student.ReturnData.collectedCharger,
+      returnedCase: student.ReturnData.collectedCase,
       //@ts-ignore
       returnNotes: student.ReturnData.notes,
     }
@@ -425,9 +444,9 @@ export interface Chromebook {
 }
 
 export interface ReturnData {
-  chromebook: boolean,
-  charger: boolean,
-  case: boolean,
+  collectedChromebook: boolean,
+  collectedCharger: boolean,
+  collectedCase: boolean,
   notes?: string
 }
 export interface Student {
@@ -447,4 +466,15 @@ export interface StudentQueryReturn {
 export interface StudentArrayQueryReturn {
   time: Date;
   students: Student[];
+}
+
+
+export interface ReturnInfoQuery {
+  sheetID: string,
+  sheetPage: string,
+  chromebookSerialIndex: string,
+  chromebookReturnedIndex: string,
+  caseReturnedIndex: string,
+  chargerReturnedIndex: string,
+  notesIndex: string
 }

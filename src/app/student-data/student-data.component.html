@@ -1,5 +1,6 @@
-<div class="container">
-  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<div class="container" *ngIf="student">
+
   <!--Tickets-->
   <mat-card *ngIf="student.Tickets.length > 0">
         <mat-card-title>Tickets</mat-card-title>
@@ -78,7 +79,7 @@
   <!--Google User-->
   <mat-card>
         <mat-card-title>
-          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px">Edit.</button></h3>
+          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px" [hidden]="false">Edit.</button></h3>
 
         </mat-card-title>
 
@@ -147,40 +148,37 @@
 
 
 </div>
-
-<mat-card class="return-data-card">
-  <mat-card-title>
-    Return Data
-  </mat-card-title>
-  <mat-card-content class="return-container">
-    <p>
-      Returned Chromebook
-      <mat-checkbox [(ngModel)]="student.ReturnData.chromebook" [checked]="student.ReturnData.chromebook"></mat-checkbox>
-    </p>
-    <p>
-      Returned Charger
-      <mat-checkbox [(ngModel)]="student.ReturnData.charger" ></mat-checkbox>
-    </p>
-    <p>
-      Returned Case
-      <mat-checkbox [(ngModel)]="student.ReturnData.case"></mat-checkbox>
-    </p>
-    <div>
-      Notes:
-
-      <form class="notes-form">
-        <mat-form-field class="full-width" appearance="fill">
+<div *ngIf="student">
+  <mat-card class="return-data-card">
+    <mat-card-title>
+      Return Data
+    </mat-card-title>
+    <mat-card-content class="return-container">
+      <p>
+        Returned Chromebook
+        <mat-checkbox [(ngModel)]="student.ReturnData.collectedChromebook"></mat-checkbox>
+      </p>
+      <p>
+        Returned Charger
+        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCharger" ></mat-checkbox>
+      </p>
+      <p>
+        Returned Case
+        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCase"></mat-checkbox>
+      </p>
+      <div>
+        <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>Notes</mat-label>
-          <textarea formControlName="Notes" matInput #Notes maxlength="256" placeholder="Ex. Case was damaged">{{student.ReturnData.notes}}</textarea>
-          <mat-hint align="end">{{Notes.value.length}} / 256</mat-hint>
+          <textarea matInput placeholder="Ex. Case was damaged" [(ngModel)]="student.ReturnData.notes"></textarea>
         </mat-form-field>
-      </form>
 
-    </div>
 
-    <div class="button-container">
-      <button mat-raised-button (click)="UpdateData()" color="accent">Update Values</button>
-      <button mat-raised-button color="warn" routerLink="/">Return to search</button>
-    </div>
-  </mat-card-content>
-</mat-card>
+      </div>
+
+      <div class="button-container">
+        <button mat-raised-button (click)="UpdateData()" color="accent">Update Values</button>
+        <button mat-raised-button color="warn" routerLink="/">Return to search</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

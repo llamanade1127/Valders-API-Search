@@ -1,36 +1,81 @@
 <div class="container">
-  <mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <mat-card *ngIf="user">
     <mat-card-title>
       <h3>User: {{user.id}}</h3>
+
     </mat-card-title>
 
     <mat-card-content>
-      <div class="flex">
-        <mat-card>
-          <mat-card-title>Name</mat-card-title>
-          <mat-card-content>{{user.name.fullName}}</mat-card-content>
-        </mat-card>
-        <mat-card>
-          <mat-card-title>ID</mat-card-title>
-          <mat-card-content>{{user.id}}</mat-card-content>
-        </mat-card>
-        <mat-card>
-          <mat-card-title>Emails</mat-card-title>
-          <mat-card-content *ngFor="let email of user.emails">{{email.address}}</mat-card-content>
-        </mat-card>
-        <mat-card>
-          <mat-card-title>Suspended</mat-card-title>
-          <mat-card-content>{{user.suspended}}</mat-card-content>
-        </mat-card>
-        <mat-card>
-          <mat-card-title>OU</mat-card-title>
-          <mat-card-content>{{user.orgUnitPath}}</mat-card-content>
-        </mat-card>
-        <mat-card>
-          <mat-card-title>Last Login Time</mat-card-title>
-          <mat-card-content>{{user.lastLoginTime}}</mat-card-content>
-        </mat-card>
+      <table class="table">
 
+        <tr>
+          <th class="table-title">
+            Name
+          </th>
+          <td class="table-data">
+            {{user.name.fullName}}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="table-title">
+            ID
+          </th>
+          <td class="table-data">
+            {{user.id}}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="table-title">
+            Emails
+          </th>
+          <td class="table-data" *ngFor="let email of user.emails">
+            {{email.address}}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="table-title">
+            Is Suspended
+          </th>
+          <td class="table-data">
+            {{user.suspended}}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="table-title">
+            OU
+          </th>
+          <td class="table-data">
+            {{user.orgUnitPath}}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="table-title">
+            Last Login Time
+          </th>
+          <td class="table-data">
+            {{user.lastLoginTime}}
+          </td>
+        </tr>
+
+        <tr *ngIf="hasStudent">
+          <th class="table-title">
+            Assigned Chromebook
+          </th>
+          <td class="table-data">
+            {{student.Chromebook.serialNumber}} | {{student.Chromebook.annotatedAssetId}}
+          </td>
+        </tr>
+      </table>
+      <div>
+        <button mat-raised-button color="accent" routerLink="/user/{{user.id}}/addStudent" *ngIf="!hasStudent">Assign Student</button>
+        <button mat-raised-button color="accent" routerLink="/student/{{studentID}}" *ngIf="hasStudent">Go To Student Page</button>
+        <button mat-raised-button color="warn" routerLink="/">Return to search</button>
       </div>
     </mat-card-content>
   </mat-card>

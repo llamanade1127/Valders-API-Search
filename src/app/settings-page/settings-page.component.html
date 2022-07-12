@@ -1,6 +1,6 @@
 
 
-<div class="button-container">
+<div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
   <mat-card>
 
@@ -8,84 +8,15 @@
       Settings
     </mat-card-title>
     <mat-card-content>
-      <div>
-        <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()">Re-Link Students</button>
-        <button mat-raised-button [disabled]="loading" class= "button" color="warn">Shut Down Server</button>
-      </div>
-      <div>
-        <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-container">
+      <div class="button-container">
+        <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()" class="div1">Re-Link Students</button>
+        <button mat-raised-button [disabled]="loading" class="button" routerLink="/settings/linkReturnData"class="div2">Link Return Data by Spreadsheet</button>
+        <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudentTickets()"class="div3">Link Tickets to Students</button>
+        <button mat-raised-button [disabled]="loading" class="button" color="warn"class="div4">Wipe Student Return Data</button>
+        <button mat-raised-button [disabled]="loading" class= "button" color="warn"class="di5">Shut Down Server</button>
+        <button mat-raised-button [disabled]="loading" class= "button" routerLink="/" color="accent"class="div6">Return</button>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Sheet ID</mat-label>
-            <input
-              matInput
-              formControlName="id"
-              type="text"
-              placeholder="ID"
-              autocomplete="off"/>
-          </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Sheet Page</mat-label>
-            <input
-              matInput
-              formControlName="id"
-              type="text"
-              placeholder="ID"
-              autocomplete="off"/>
-          </mat-form-field>
-
-          <div class="4x4-grid">
-            <mat-form-field appearance="fill" class="grid-1">
-              <mat-label>Chromebook Serial Index</mat-label>
-              <input
-                matInput
-                formControlName="csi"
-                type="text"
-                placeholder="Serial Number"
-                autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="grid-2">
-              <mat-label>Chromebook Returned Index</mat-label>
-              <input
-                matInput
-                formControlName="cri"
-                type="text"
-                placeholder="Returned Chromebook"
-                autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="grid-3">
-              <mat-label>Sheet ID</mat-label>
-              <input
-                matInput
-                formControlName="id"
-                type="text"
-                placeholder="ID"
-                autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="grid-4">
-              <mat-label>Sheet ID</mat-label>
-              <input
-                matInput
-                formControlName="id"
-                type="text"
-                placeholder="ID"
-                autocomplete="off"/>
-            </mat-form-field>
-          </div>
-
-          <button
-                  mat-stroked-button
-                  type="submit"
-                  [disabled]="loading"
-          >
-            Update {{index?.value}} with {{value?.value}}?
-          </button>
-
-        </form>
       </div>
 
     </mat-card-content>

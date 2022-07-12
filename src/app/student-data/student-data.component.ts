@@ -70,10 +70,12 @@ export class StudentDataComponent implements OnInit {
   }
 
   UpdateData() {
+
     this.loading = true;
     this.api.UpdateReturnParameters(this.student).subscribe({
       next: data => {
         this.loading = false;
+        this.snack.error("Successfully updated student")
       },
       error: err => {
         this.snack.error(err);

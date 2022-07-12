@@ -4,13 +4,23 @@
   flex-wrap: wrap;
 }
 
-.container {
-  max-width: 100% / 2;
-  mat-card-content {
-    mat-card {
-      margin: 10px;
+table, th, td {
+  border: 2px groove #b1b1b1;
+  border-radius: 2px;
+  padding: 5px
 
-    }
-  }
 }
+mat-card {
+  margin: 100px auto auto;
+  max-width: fit-content;
+}
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  margin: 10px;
+}
+
 

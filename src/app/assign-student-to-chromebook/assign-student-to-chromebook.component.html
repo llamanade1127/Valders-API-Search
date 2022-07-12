@@ -1,0 +1,92 @@
+<div>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (submit)="OnSubmit()">
+        <mat-form-field appearance="fill" >
+          <mat-label>Student Key</mat-label>
+          <input
+            matInput
+            formControlName="id"
+            type="text"
+            placeholder="ID"
+            autocomplete="off"/>
+          <mat-hint align="end">Can be their email, name, or ID</mat-hint>
+        </mat-form-field>
+
+        <button mat-stroked-button
+                type="submit"
+                [disabled]="loading"
+                color="accent"
+        >
+          Find student?
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!--Has found student-->
+  <div *ngIf="student">
+
+    <mat-card>
+      <mat-card-title>
+        Assign this student to chromebook? Will overwrite chromebook!
+      </mat-card-title>
+      <mat-card-content>
+        <table class="table">
+
+          <tr>
+            <th class="table-title">
+              Student Name
+            </th>
+            <td class="table-data">
+              {{student.Name}}
+            </td>
+          </tr>
+
+          <tr>
+            <th class="table-title">
+              Student ID
+            </th>
+            <td class="table-data">
+              {{student.GInfo.id}}
+              <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
+            </td>
+          </tr>
+
+          <tr>
+            <th class="table-title">
+              Email
+            </th>
+            <td class="table-data">
+              {{student.GInfo.primaryEmail}}
+            </td>
+          </tr>
+
+          <tr>
+            <th class="table-title">
+              Current Assigned Chromebook
+            </th>
+            <td class="table-data">
+              {{student.Chromebook.serialNumber}}/{{student.Chromebook.annotatedAssetId}}
+            </td>
+          </tr>
+
+        </table>
+        <button mat-raised-button color="accent" (click)="UpdateStudent()">Replace Student</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!--Student does not exist but their Google account does-->
+  <div *ngIf="!student && user">
+    <mat-card>
+      <mat-card-title>
+        This student does not exist!
+      </mat-card-title>
+      <mat-card-content>
+        Create student and assign this google user to a chromebook?
+        <button mat-raised-button color="accent">Assign</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

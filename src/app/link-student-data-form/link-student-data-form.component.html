@@ -1,0 +1,96 @@
+<div>
+  <mat-card>
+    <mat-card-title>
+      Relink Data
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-container" class="grid">
+
+        <mat-form-field appearance="fill" class="grid1">
+          <mat-label>Sheet ID</mat-label>
+          <input
+            matInput
+            formControlName="id"
+            type="text"
+            placeholder="ID"
+            autocomplete="off"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid2">
+          <mat-label>Sheet Page</mat-label>
+          <input
+            matInput
+            formControlName="page"
+            type="text"
+            placeholder="Page"
+            autocomplete="off"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid3">
+          <mat-label>Chromebook Serial Index</mat-label>
+          <input
+            matInput
+            formControlName="csi"
+            type="text"
+            placeholder="Serial Number"
+            autocomplete="off"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid4">
+          <mat-label>Chromebook Returned Index</mat-label>
+          <input
+            matInput
+            formControlName="cri"
+            type="text"
+            placeholder="Returned Chromebook"
+            autocomplete="off"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid5">
+          <mat-label>Case Returned Index</mat-label>
+          <input
+            matInput
+            formControlName="cari"
+            type="text"
+            placeholder="Returned Case"
+            autocomplete="off"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid6">
+        <mat-label>Charger Returned Index</mat-label>
+        <input
+          matInput
+          formControlName="chri"
+          type="text"
+          placeholder="Charger Returned"
+          autocomplete="off"/>
+      </mat-form-field>
+
+        <mat-form-field appearance="fill" class="grid7">
+          <mat-label>Return Notes Index</mat-label>
+          <input
+            matInput
+            formControlName="rni"
+            type="text"
+            placeholder="Notes"
+            autocomplete="off"/>
+        </mat-form-field>
+        <div #filler></div>
+        <button
+          mat-stroked-button
+          type="submit"
+          [disabled]="loading"
+        >
+          <mat-icon>
+            <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+          </mat-icon>
+
+          Update Student Return Data
+        </button>
+        <button mat-raised-button color="accent" routerLink="/settings">Return</button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

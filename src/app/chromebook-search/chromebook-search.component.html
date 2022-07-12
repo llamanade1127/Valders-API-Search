@@ -26,8 +26,11 @@
             <mat-option value="VASD" *ngIf="search?.value == 'chromebook'">VASD Code</mat-option>
             <mat-option value="SERIAL"*ngIf="search?.value == 'chromebook'" >Serial Number</mat-option>
 
-            <mat-option value="email"*ngIf="search?.value == 'student' || search?.value == 'user'" >Email</mat-option>
-            <mat-option value="sid"*ngIf="search?.value == 'student' || search?.value == 'user'" >Student ID</mat-option>
+            <mat-option value="primaryEmail"*ngIf="search?.value == 'user' " >Primary Email</mat-option>
+            <mat-option value="id"*ngIf="search?.value == 'user' " >ID</mat-option>
+
+            <mat-option value="email"*ngIf="search?.value == 'student' " >Email</mat-option>
+            <mat-option value="sid"*ngIf="search?.value == 'student' " >Student ID</mat-option>
 
             <mat-option value="assignedChromebook" *ngIf="search?.value == 'student'">Assigned Chromebook SN</mat-option>
             <mat-option value="name" *ngIf="search?.value == 'student'">Name</mat-option>
@@ -57,17 +60,18 @@
                 mat-stroked-button
                 type="submit"
                 [disabled]="loading"
+                color="accent"
         >
           Search for {{search?.value}}
         </button>
 
       </form>
     </mat-card-content>
-    <mat-card-footer>
-      <button mat-raised-button routerLink="/settings">Settings</button>
-    </mat-card-footer>
-  </mat-card>
 
+  </mat-card>
+  <mat-card>
+    <button mat-raised-button routerLink="/settings" color="accent">Settings</button>
+  </mat-card>
 
     <div class="chromebook-data-container">
       <div *ngIf="chromebook">

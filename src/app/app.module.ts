@@ -28,6 +28,11 @@ import { StudentTableComponent } from './student-table/student-table.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { LinkStudentDataFormComponent } from './link-student-data-form/link-student-data-form.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatIconModule} from "@angular/material/icon";
+import { AssignStudentToChromebookComponent } from './assign-student-to-chromebook/assign-student-to-chromebook.component';
+import { AssignUserToChromebookComponent } from './assign-user-to-chromebook/assign-user-to-chromebook.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +43,10 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     UserDataComponent,
     ShellComponent,
     SettingsPageComponent,
-    StudentTableComponent
+    StudentTableComponent,
+    LinkStudentDataFormComponent,
+    AssignStudentToChromebookComponent,
+    AssignUserToChromebookComponent
   ],
   imports: [
     BrowserModule,
@@ -61,8 +69,9 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     MatPaginatorModule,
     MatTableModule,
     MatCheckboxModule,
-    FormsModule
-
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

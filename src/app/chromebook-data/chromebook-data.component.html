@@ -1,7 +1,9 @@
 <div class="container">
-  <mat-card>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <mat-card *ngIf="chromebook">
     <mat-card-title>
       <h3>Chromebook: {{chromebook.serialNumber}}</h3>
+
     </mat-card-title>
 
     <mat-card-content>
@@ -22,6 +24,7 @@
           </th>
           <td class="table-data">
             {{chromebook.serialNumber}}
+            <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
           </td>
         </tr>
 
@@ -61,8 +64,21 @@
           </td>
         </tr>
 
-      </table>
+        <tr *ngIf="hasStudent">
+          <th class="table-title">
+            Assigned Student
+          </th>
+          <td class="table-data">
+            {{student.Name}}
+          </td>
+        </tr>
 
+      </table>
+      <div>
+        <button mat-raised-button color="accent" routerLink="/chromebook/{{chromebook.serialNumber}}/addStudent" *ngIf="!hasStudent">Assign Chromebook</button>
+        <button mat-raised-button color="accent" routerLink="/student/{{studentID}}" *ngIf="hasStudent">Go To Student Page</button>
+        <button mat-raised-button color="warn" routerLink="/">Return to search</button>
+      </div>
     </mat-card-content>
   </mat-card>
 
