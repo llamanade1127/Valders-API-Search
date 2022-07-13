@@ -9,6 +9,7 @@ import {UserDataComponent} from "./user-data/user-data.component";
 import {LinkStudentDataFormComponent} from "./link-student-data-form/link-student-data-form.component";
 import {AssignStudentToChromebookComponent} from "./assign-student-to-chromebook/assign-student-to-chromebook.component";
 import {AssignUserToChromebookComponent} from "./assign-user-to-chromebook/assign-user-to-chromebook.component";
+import {CreateStudentComponent} from "./create-student/create-student.component";
 
 const routes: Routes = [
   { path: '', component: ChromebookSearchComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'chromebook/:id', component:ChromebookDataComponent},
   { path: 'user/:id', component: UserDataComponent},
   { path: 'chromebook/:id/addStudent', component: AssignStudentToChromebookComponent},
-  { path: 'user/:id/assignChromebook', component: AssignUserToChromebookComponent}
+  { path: 'user/:id/assignChromebook', component: AssignUserToChromebookComponent},
+  { path: 'createStudent', component: CreateStudentComponent}
 ];
 
 @NgModule({

@@ -77,9 +77,9 @@
       </mat-card>
 
   <!--Google User-->
-  <mat-card>
+  <mat-card *ngIf="user">
         <mat-card-title>
-          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px" [hidden]="false">Edit.</button></h3>
+          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px" (click)="isUpdatingStudent = !isUpdatingStudent">Edit.</button></h3>
 
         </mat-card-title>
 
@@ -141,8 +141,33 @@
             </tr>
 
           </table>
+
+
         </mat-card-content>
+
+
       </mat-card>
+
+  <mat-card *ngIf="isUpdatingStudent || !user">
+    <mat-card-title>
+      Update User
+    </mat-card-title>
+    <mat-card-content>
+      <div  class="flex">
+
+        <mat-button-toggle-group [(ngModel)]="studentSearchType" class="form-element">
+          <mat-button-toggle value="primaryEmail">Primary Email</mat-button-toggle>
+          <mat-button-toggle value="ID">ID</mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-form-field class="example-form-field" appearance="fill" class="form-element">
+          <mat-label>New Student ID</mat-label>
+          <input matInput type="text" [(ngModel)]="newStudentID" placeholder="email@student.valders.k12.wi.us">
+        </mat-form-field>
+        <button mat-raised-button matRipple (click)="UpdateStudentID()" class="form-element">Update ID</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
 
   <!--Return Data-->
 

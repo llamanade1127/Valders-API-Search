@@ -14,11 +14,16 @@ td {
   }
 
 }
+
+.form-element{
+  margin:10px;
+}
 button {
   margin: 10px
 }
 .flex {
   display: flex;
+  flex-direction: column;
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;

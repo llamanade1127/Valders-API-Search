@@ -10,6 +10,11 @@ import {SnackBarService} from "../snack-bar.service";
   styleUrls: ['./student-data.component.scss']
 })
 export class StudentDataComponent implements OnInit {
+
+  isUpdatingStudent = false;
+  newStudentID = ""
+  studentSearchType = ""
+
   //@ts-ignore
   form: FormGroup;
   studentID: string = "";
@@ -87,7 +92,25 @@ export class StudentDataComponent implements OnInit {
     return this.form.get("Notes");
   }
 
-  updateNotes(){
-
+  UpdateStudentID(){
+    this.api.QueryUser(this.newStudentID, this.studentSearchType).subscribe({
+      next: value => {
+        this.student.Name = value.data.name.givenName;
+        //@ts-ignore
+        this.student.GInfo = value.data;
+        this.api.UpdateReturnParameters(this.student, "SERIAL").subscribe({
+          next: val => {
+            this.snack.error("Student Updated")
+          },
+          error: err => {
+            this.snack.error("Error updating student")
+          }
+        })
+      },
+      error: err => {
+        this.snack.error("Could not find Google User!")
+      }
+    })
   }
+
 }

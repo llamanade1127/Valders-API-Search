@@ -88,6 +88,8 @@ export class AssignStudentToChromebookComponent implements OnInit {
       }
     })
 
+  }
 
+  CreateAndAssignStudent(){
   }
 }

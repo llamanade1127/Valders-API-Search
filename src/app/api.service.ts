@@ -9,6 +9,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  GetAllChromebooks() {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.get<AllChromebooksQueryReturn>(`http://localhost:3000/chromebooks/`, {headers})
+  }
+
   QueryChromebook(type: "VASD" | "SERIAL", code: string): Observable<QueryReturn> {
     let headers = {
       //TODO: Needs to be given by server for release build
@@ -46,6 +55,15 @@ export class ApiService {
     return this.http.get<any>('http://localhost:3000/chromebooks/students/link', {headers})
   }
 
+  CreateStudent(student: ReturnStudent){
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.post<any>('http://localhost:3000/chromebooks/students/create',student, {headers})
+  }
+
   GetAllStudents(){
     let headers = {
       //TODO: Needs to be given by server for release build
@@ -73,13 +91,16 @@ export class ApiService {
     return this.http.post<any>('http://localhost:3000/server/dasdfadsfsa', {data}, {headers})
   }
 
-  UpdateReturnParameters(student: Student) {
+  UpdateReturnParameters(student: Student, returnType:"ID" | "SERIAL" = "ID") {
     let sendData = this.ConvertFulltoReturnUser(student);
     let headers = {
       //TODO: Needs to be given by server for release build
       'authorization': '123456'
     }
-    return this.http.patch(`http://localhost:3000/chromebooks/students/${student.GInfo.id}/update`,sendData, {headers: headers})
+    if(returnType == "ID")
+      return this.http.patch(`http://localhost:3000/chromebooks/students/${student.GInfo.id}/update`,sendData, {headers: headers})
+    else
+      return this.http.patch(`http://localhost:3000/chromebooks/students/${student.Chromebook.serialNumber}/update`,sendData, {headers: headers})
 
   }
 
@@ -235,6 +256,11 @@ export interface QueryReturn {
   time: Date;
   chromebook: Chromebook;
   tickets: any[];
+}
+
+export interface AllChromebooksQueryReturn {
+  time: Date;
+  chromebooks: Chromebook[];
 }
 
 

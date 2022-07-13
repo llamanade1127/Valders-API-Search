@@ -26,7 +26,14 @@ export class ChromebookDataComponent implements OnInit {
           this.chromebook = chromebook.chromebook;
           this.api.QueryStudent(this.chromebook.serialNumber).subscribe({
             next: student => {
-              this.studentID = student.student.GInfo.id;
+              console.log(student)
+
+              if(student.student.GInfo == null){
+                this.studentID = student.student.Name;
+              } else {
+                this.studentID = student.student.GInfo.id;
+              }
+
               this.student = student.student;
               this.hasStudent = true;
               this.loading = false;

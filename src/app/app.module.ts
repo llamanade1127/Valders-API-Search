@@ -21,7 +21,7 @@ import { StudentDataComponent } from './student-data/student-data.component';
 import { UserDataComponent } from './user-data/user-data.component';
 import { ShellComponent } from './shell/shell.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
-import { SettingsPageComponent } from './settings-page/settings-page.component';
+import {AdminDialog, SettingsPageComponent} from './settings-page/settings-page.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { StudentTableComponent } from './student-table/student-table.component';
@@ -33,6 +33,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatIconModule} from "@angular/material/icon";
 import { AssignStudentToChromebookComponent } from './assign-student-to-chromebook/assign-student-to-chromebook.component';
 import { AssignUserToChromebookComponent } from './assign-user-to-chromebook/assign-user-to-chromebook.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { CreateStudentComponent } from './create-student/create-student.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -46,7 +49,9 @@ import { AssignUserToChromebookComponent } from './assign-user-to-chromebook/ass
     StudentTableComponent,
     LinkStudentDataFormComponent,
     AssignStudentToChromebookComponent,
-    AssignUserToChromebookComponent
+    AssignUserToChromebookComponent,
+    AdminDialog,
+    CreateStudentComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +76,9 @@ import { AssignUserToChromebookComponent } from './assign-user-to-chromebook/ass
     MatCheckboxModule,
     FormsModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

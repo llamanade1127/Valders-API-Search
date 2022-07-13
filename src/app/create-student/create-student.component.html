@@ -1,0 +1,74 @@
+<div>
+  <mat-card>
+    <mat-card-title>
+      Create Student
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" class="grid centered" (submit)="OnSubmit()">
+
+        <!--Top Left-->
+        <mat-form-field appearance="fill" class="gird1">
+          <mat-label>Chromebook Search Type</mat-label>
+          <mat-select formControlName="cst">
+            <mat-option value="VASD">VASD Code</mat-option>
+            <mat-option value="SERIAL">Serial Number</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <!-- Top Right -->
+        <mat-form-field appearance="fill" class="gird3">
+          <mat-label>Google User Search Type</mat-label>
+          <mat-select formControlName="gust">
+            <mat-option value="primaryEmail">Email</mat-option>
+            <mat-option value="id">ID</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--Middle Left-->
+        <mat-form-field appearance="fill" [color]="chromebookCode?.valid && 'accent'" class="gird2">
+          <input
+            matInput
+            formControlName="chromebookCode"
+            type="text"
+            placeholder="Chromebook Code"
+            autocomplete="off"
+          />
+
+          <mat-error *ngIf="chromebookCode?.invalid">
+            You enter valid data
+          </mat-error>
+        </mat-form-field>
+
+
+        <!-- Middle Right -->
+        <mat-form-field appearance="fill" [color]="studentCode?.valid && 'accent'" class="gird4">
+          <input
+            matInput
+            formControlName="studentCode"
+            type="text"
+            placeholder="Student Code"
+            autocomplete="off"
+          />
+
+          <mat-error *ngIf="chromebookCode?.invalid">
+            You enter valid data
+          </mat-error>
+        </mat-form-field>
+
+        <div class="gird5">
+          <!-- Bottom middle -->
+          <button mat-stroked-button
+                  type="submit"
+                  [disabled]="loading"
+                  color="accent"
+
+          >
+            Create User
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

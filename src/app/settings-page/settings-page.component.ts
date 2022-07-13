@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SnackBarService} from "../snack-bar.service";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-settings-page',
@@ -95,3 +96,10 @@ export class SettingsPageComponent implements OnInit {
 
 }
 
+@Component({
+  selector: 'admin-dialog',
+  templateUrl: 'admin-dialog.html',
+})
+export class AdminDialog {
+  constructor(public dialogRef: MatDialogRef<AdminDialog>) {}
+}
