@@ -29,6 +29,10 @@ button {
   flex-wrap: wrap;
 
 }
+.tickets-table-title {
+  text-overflow: ellipsis;
+
+}
 table, th, td {
   border: 2px groove #b1b1b1;
   border-radius: 2px;

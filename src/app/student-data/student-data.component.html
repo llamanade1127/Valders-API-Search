@@ -4,7 +4,21 @@
   <!--Tickets-->
   <mat-card *ngIf="student.Tickets.length > 0">
         <mat-card-title>Tickets</mat-card-title>
-        <mat-card-content *ngFor="let ticket of student.Tickets">{{ticket}}</mat-card-content>
+        <mat-card-content class="small-card">
+          <table class="table">
+            <tr *ngFor="let ticket of student.Tickets">
+              <th >
+                <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
+              </th>
+              <td>
+                <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit" >
+                  <button mat-raised-button color="warn">Go To Document</button>
+                </a>
+
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
       </mat-card>
 
   <!--Chromebook-->
