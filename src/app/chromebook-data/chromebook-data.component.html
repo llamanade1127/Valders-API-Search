@@ -33,7 +33,13 @@
             Last User
           </th>
           <td class="table-data">
-            {{chromebook.recentUsers[0].email}}
+            <a routerLink="/student/{{recentUserStudent.GInfo.id}}" *ngIf="recentUserStudent" >
+              {{chromebook.recentUsers[0].email}}
+            </a>
+            <p *ngIf="!recentUserStudent">
+              {{chromebook.recentUsers[0].email}}
+            </p>
+
           </td>
         </tr>
 

@@ -113,4 +113,17 @@ export class StudentDataComponent implements OnInit {
     })
   }
 
+  SetTicketToComplete(id: string){
+    this.api.SetTicketToComplete(id).subscribe({
+      next: ticket => {
+        this.snack.error("Ticket moved to completed tickets folder")
+        this.student.Tickets.splice(this.student.Tickets.indexOf(id), 1)
+        this.api.UpdateReturnParameters(this.student);
+      },
+      error: err => {
+        this.snack.error("Error setting ticket to complete")
+      }
+    })
+  }
+
 }

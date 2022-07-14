@@ -3,175 +3,183 @@
 
   <!--Tickets-->
   <mat-card *ngIf="student.Tickets.length > 0">
-        <mat-card-title>Tickets</mat-card-title>
-        <mat-card-content class="small-card">
-          <table class="table">
-            <tr *ngFor="let ticket of student.Tickets">
-              <th >
-                <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
-              </th>
-              <td>
-                <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit" >
-                  <button mat-raised-button color="warn">Go To Document</button>
-                </a>
-
-              </td>
-            </tr>
-          </table>
-        </mat-card-content>
-      </mat-card>
+    <mat-card-title>Tickets</mat-card-title>
+    <mat-card-content class="small-card">
+      <table class="table">
+        <tr *ngFor="let ticket of student.Tickets">
+          <th>
+            <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
+          </th>
+          <td class="tickets-table-data">
+            <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit">
+              <button mat-raised-button color="accent">Go To Document</button>
+            </a>
+            <button mat-raised-button color="warn" (click)="SetTicketToComplete(ticket.split('+')[0])">Set ticket to
+              complete
+            </button>
+          </td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
 
   <!--Chromebook-->
   <mat-card>
-        <mat-card-title>
-          <h3>Chromebook: {{chromebook.serialNumber}}<button mat-raised-button  style="margin-left: 30px" color="accent">Edit.</button></h3>
+    <mat-card-title>
+      <h3>Chromebook: {{chromebook.serialNumber}}
+        <button mat-raised-button style="margin-left: 30px" color="accent">Edit.</button>
+      </h3>
 
-        </mat-card-title>
+    </mat-card-title>
 
-        <mat-card-content>
-          <table class="table">
+    <mat-card-content>
+      <table class="table">
 
-            <tr>
-              <th class="table-title">
-                VASD Code
-              </th>
-              <td class="table-data">
-                {{chromebook.annotatedAssetId}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            VASD Code
+          </th>
+          <td class="table-data">
+            {{chromebook.annotatedAssetId}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Serial Number
-              </th>
-              <td class="table-data">
-                {{chromebook.serialNumber}}
-                <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Serial Number
+          </th>
+          <td class="table-data">
+            {{chromebook.serialNumber}}
+            <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Last User
-              </th>
-              <td class="table-data">
-                {{chromebook.recentUsers[0].email}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Last User
+          </th>
+          <td class="table-data">
+            {{chromebook.recentUsers[0].email}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                OU
-              </th>
-              <td class="table-data">
-                {{chromebook.orgUnitPath}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            OU
+          </th>
+          <td class="table-data">
+            {{chromebook.orgUnitPath}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Model
-              </th>
-              <td class="table-data">
-                {{chromebook.model}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Model
+          </th>
+          <td class="table-data">
+            {{chromebook.model}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                MAC Address
-              </th>
-              <td class="table-data">
-                {{chromebook.macAddress.toUpperCase()}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            MAC Address
+          </th>
+          <td class="table-data">
+            {{chromebook.macAddress.toUpperCase()}}
+          </td>
+        </tr>
 
-          </table>
-        </mat-card-content>
-      </mat-card>
+      </table>
+    </mat-card-content>
+  </mat-card>
 
   <!--Google User-->
   <mat-card *ngIf="user">
-        <mat-card-title>
-          <h3>User: {{user.id}}<button mat-raised-button color="accent" style="margin-left: 30px" (click)="isUpdatingStudent = !isUpdatingStudent">Edit.</button></h3>
+    <mat-card-title>
+      <h3>User: {{user.id}}
+        <button mat-raised-button color="accent" style="margin-left: 30px"
+                (click)="isUpdatingStudent = !isUpdatingStudent">Edit.
+        </button>
+      </h3>
 
-        </mat-card-title>
+    </mat-card-title>
 
-        <mat-card-content>
-          <table class="table">
+    <mat-card-content>
+      <table class="table">
 
-            <tr>
-              <th class="table-title">
-                Name
-              </th>
-              <td class="table-data">
-                {{user.name.fullName}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Name
+          </th>
+          <td class="table-data">
+            {{user.name.fullName}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                ID
-              </th>
-              <td class="table-data">
-                {{user.id}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            ID
+          </th>
+          <td class="table-data">
+            {{user.id}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Emails
-              </th>
-              <td class="table-data" *ngFor="let email of user.emails">
-                {{email.address}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Emails
+          </th>
+          <td class="table-data" *ngFor="let email of user.emails">
+            {{email.address}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Is Suspended
-              </th>
-              <td class="table-data">
-                {{user.suspended}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Is Suspended
+          </th>
+          <td class="table-data">
+            {{user.suspended}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                OU
-              </th>
-              <td class="table-data">
-                {{user.orgUnitPath}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            OU
+          </th>
+          <td class="table-data">
+            {{user.orgUnitPath}}
+          </td>
+        </tr>
 
-            <tr>
-              <th class="table-title">
-                Last Login Time
-              </th>
-              <td class="table-data">
-                {{user.lastLoginTime}}
-              </td>
-            </tr>
+        <tr>
+          <th class="table-title">
+            Last Login Time
+          </th>
+          <td class="table-data">
+            {{user.lastLoginTime}}
+          </td>
+        </tr>
 
-          </table>
-
-
-        </mat-card-content>
+      </table>
 
 
-      </mat-card>
+    </mat-card-content>
+
+
+  </mat-card>
 
   <mat-card *ngIf="isUpdatingStudent || !user">
     <mat-card-title>
       Update User
     </mat-card-title>
     <mat-card-content>
-      <div  class="flex">
+      <div class="flex">
 
         <mat-button-toggle-group [(ngModel)]="studentSearchType" class="form-element">
           <mat-button-toggle value="primaryEmail">Primary Email</mat-button-toggle>
-          <mat-button-toggle value="ID">ID</mat-button-toggle>
+          <mat-button-toggle value="ID">User ID</mat-button-toggle>
         </mat-button-toggle-group>
         <mat-form-field class="example-form-field" appearance="fill" class="form-element">
           <mat-label>New Student ID</mat-label>
@@ -184,7 +192,6 @@
 
 
   <!--Return Data-->
-
 
 </div>
 <div *ngIf="student">
@@ -199,7 +206,7 @@
       </p>
       <p>
         Returned Charger
-        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCharger" ></mat-checkbox>
+        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCharger"></mat-checkbox>
       </p>
       <p>
         Returned Case

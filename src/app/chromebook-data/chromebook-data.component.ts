@@ -16,6 +16,9 @@ export class ChromebookDataComponent implements OnInit {
   studentID = ""
   //@ts-ignore
   student: Student;
+
+  //@ts-ignore
+  recentUserStudent: Student;
   constructor(private routes: ActivatedRoute, private api: ApiService) { }
 
   ngOnInit(): void {
@@ -41,6 +44,11 @@ export class ChromebookDataComponent implements OnInit {
             error: any => {
               this.hasStudent = false;
               this.loading = false;
+            }
+          })
+          this.api.QueryStudent(this.chromebook.recentUsers[0].email).subscribe({
+            next: data => {
+              this.recentUserStudent = data.student;
             }
           })
           this.loading = false;

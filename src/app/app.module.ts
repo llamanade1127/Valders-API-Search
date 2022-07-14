@@ -36,6 +36,7 @@ import { AssignUserToChromebookComponent } from './assign-user-to-chromebook/ass
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { CreateStudentComponent } from './create-student/create-student.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatProgressSpinnerModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

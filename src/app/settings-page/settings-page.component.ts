@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SnackBarService} from "../snack-bar.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-settings-page',
@@ -14,7 +14,7 @@ export class SettingsPageComponent implements OnInit {
   loading = false;
   //@ts-ignore
   form: FormGroup;
-  constructor(private api: ApiService, private fb: FormBuilder, private snack: SnackBarService) { }
+  constructor(private api: ApiService, private fb: FormBuilder, private snack: SnackBarService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -37,14 +37,40 @@ export class SettingsPageComponent implements OnInit {
 
   LinkStudents() {
     this.loading = true;
-    this.api.LinkStudents().subscribe({
-      next: any => {
-        this.loading = false;
-      },
-      error: error => {
-        this.loading = false;
-      }
+    const dialogRef = this.dialog.open(AdminDialog, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe((password) => {
+      //Check password first
+      this.api.CheckAdminPassword(password).subscribe({
+        next: value1 => {
+          if(value1)
+          {
+            this.snack.error("Correct password. Linking students")
+            this.api.LinkStudents().subscribe({
+              next: any => {
+                this.snack.error("Students linked")
+                this.loading = false;
+              },
+              error: error => {
+                this.snack.error("error linking students")
+                this.loading = false;
+              }
+            })
+          } else {
+            this.loading = false;
+            this.snack.error("Incorrect password")
+          }
+
+        },
+        error: err => {
+          this.loading = false;
+          this.snack.error("Incorrect password");
+        }
+      })
+
     })
+
   }
   LinkStudentTickets(){
     this.loading = true;
@@ -58,6 +84,12 @@ export class SettingsPageComponent implements OnInit {
         this.loading = false;
       }
     })
+  }
+
+  TestDialog(){
+    const dialogRef = this.dialog.open(AdminDialog, {
+      width: '400px',
+    });
   }
 
   OnSubmit(){
@@ -101,5 +133,11 @@ export class SettingsPageComponent implements OnInit {
   templateUrl: 'admin-dialog.html',
 })
 export class AdminDialog {
+  //@ts-ignore
+  password: string;
   constructor(public dialogRef: MatDialogRef<AdminDialog>) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

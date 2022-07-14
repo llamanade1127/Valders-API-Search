@@ -2,20 +2,17 @@
 
 <div>
   <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <h1 class="header">Settings</h1>
   <mat-card>
 
-    <mat-card-title>
-      Settings
-    </mat-card-title>
     <mat-card-content>
       <div class="button-container">
-        <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudents()" class="div1">Re-Link Students</button>
+        <button mat-raised-button [disabled]="loading" class="button"  color="warn" (click)="LinkStudents()" class="div1">Re-Link Students</button>
         <button mat-raised-button [disabled]="loading" class="button" routerLink="/settings/linkReturnData"class="div2">Link Return Data by Spreadsheet</button>
         <button mat-raised-button [disabled]="loading" class="button" (click)="LinkStudentTickets()"class="div3">Link Tickets to Students</button>
         <button mat-raised-button [disabled]="loading" class="button" color="warn"class="div4">Wipe Student Return Data</button>
         <button mat-raised-button [disabled]="loading" class= "button" color="warn"class="di5">Shut Down Server</button>
         <button mat-raised-button [disabled]="loading" class= "button" routerLink="/" color="accent"class="div6">Return</button>
-
 
       </div>
 

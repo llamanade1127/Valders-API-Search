@@ -113,6 +113,21 @@ export class ApiService {
 
   }
 
+  SetTicketToComplete(id: string) {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    return this.http.get(`http://localhost:3000/tickets/${id}/setComplete`, {headers: headers})
+
+  }
+  CheckAdminPassword(password: string) {
+    console.log(password)
+    let headers = {
+      'authorization': password
+    }
+    return this.http.get<boolean>(`http://localhost:3000/auth/checkAdmin`, {headers: headers})
+  }
   LinkTicketsToStudents() {
     let headers = {
       //TODO: Needs to be given by server for release build
