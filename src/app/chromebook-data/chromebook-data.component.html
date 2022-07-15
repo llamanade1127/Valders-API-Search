@@ -82,7 +82,7 @@
       </table>
       <div>
         <button mat-raised-button color="accent" routerLink="/chromebook/{{chromebook.serialNumber}}/addStudent" *ngIf="!hasStudent">Assign Chromebook</button>
-        <button mat-raised-button color="accent" routerLink="/student/{{studentID}}" *ngIf="hasStudent">Go To Student Page</button>
+        <button mat-raised-button color="accent" routerLink="/student/{{chromebook.serialNumber}}" *ngIf="hasStudent">Go To Student Page</button>
         <button mat-raised-button color="warn" routerLink="/">Return to search</button>
       </div>
     </mat-card-content>

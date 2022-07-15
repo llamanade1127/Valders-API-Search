@@ -90,9 +90,18 @@ export class ApiService {
 
     return this.http.post<any>('http://localhost:3000/server/dasdfadsfsa', {data}, {headers})
   }
+  RemoveUserFromStudentAndSave(student: Student) {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    let sendData = this.RemoveStudent(student);
+    return this.http.patch(`http://localhost:3000/chromebooks/students/${student.Chromebook.serialNumber}/update`,sendData, {headers: headers})
 
+  }
   UpdateReturnParameters(student: Student, returnType:"ID" | "SERIAL" = "ID") {
     let sendData = this.ConvertFulltoReturnUser(student);
+    console.log(sendData)
     let headers = {
       //TODO: Needs to be given by server for release build
       'authorization': '123456'
@@ -145,6 +154,24 @@ export class ApiService {
       userEmail: student.GInfo.primaryEmail,
       //@ts-ignore
       userAssignedTickets: student.Tickets,
+
+      returnedChromebook: student.ReturnData.collectedChromebook,
+      returnedCharger: student.ReturnData.collectedCharger,
+      returnedCase: student.ReturnData.collectedCase,
+      //@ts-ignore
+      returnNotes: student.ReturnData.notes,
+    }
+
+  }
+  RemoveStudent(student: Student) {
+    return {
+      userID: "NONE",
+      userAssignedChromebook: student.Chromebook.serialNumber,
+      userName: "NONE",
+      userEmail: "NONE",
+      //@ts-ignore
+      userAssignedTickets: student.Tickets,
+
       returnedChromebook: student.ReturnData.collectedChromebook,
       returnedCharger: student.ReturnData.collectedCharger,
       returnedCase: student.ReturnData.collectedCase,
@@ -154,12 +181,14 @@ export class ApiService {
   }
 }
 
+
 export interface ReturnStudent{
   userID: string;
   userAssignedChromebook: string;
   userName: string;
   userEmail: string;
   userAssignedTickets: [string];
+  userCompletedTickets: string[];
   returnedChromebook: boolean;
   returnedCharger: boolean;
   returnedCase: boolean;
@@ -497,6 +526,7 @@ export interface Student {
   PrimaryEmail: string;
   ReturnData: ReturnData
   Tickets: any[];
+  CompletedTickets: string[];
 }
 
 export interface StudentQueryReturn {

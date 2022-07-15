@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApiService, Chromebook, Student, User} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SnackBarService} from "../snack-bar.service";
 
 @Component({
@@ -26,7 +26,7 @@ export class StudentDataComponent implements OnInit {
   chromebook: Chromebook;
   //@ts-ignore
   user: User;
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private api: ApiService, private snack: SnackBarService) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private api: ApiService, private snack: SnackBarService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -81,6 +81,7 @@ export class StudentDataComponent implements OnInit {
       next: data => {
         this.loading = false;
         this.snack.error("Successfully updated student")
+        this.router.navigateByUrl(`/student/${this.student.Chromebook.serialNumber}`)
       },
       error: err => {
         this.snack.error(err);
@@ -93,14 +94,21 @@ export class StudentDataComponent implements OnInit {
   }
 
   UpdateStudentID(){
+    this.api.QueryStudent(this.newStudentID).subscribe({
+      next: value => {
+        this.snack.error("This student is already assigned a chromebook. You must unassign them first")
+      }
+    })
     this.api.QueryUser(this.newStudentID, this.studentSearchType).subscribe({
       next: value => {
-        this.student.Name = value.data.name.givenName;
+        this.student.Name = value.data.name.fullName;
         //@ts-ignore
         this.student.GInfo = value.data;
         this.api.UpdateReturnParameters(this.student, "SERIAL").subscribe({
           next: val => {
+            console.log(val)
             this.snack.error("Student Updated")
+            this.router.navigateByUrl(`/student/${this.student.Chromebook.serialNumber}`)
           },
           error: err => {
             this.snack.error("Error updating student")
@@ -122,6 +130,21 @@ export class StudentDataComponent implements OnInit {
       },
       error: err => {
         this.snack.error("Error setting ticket to complete")
+      }
+    })
+  }
+
+  RemoveStudent(){
+    this.loading = true;
+    this.api.RemoveUserFromStudentAndSave(this.student).subscribe({
+      next: val => {
+        this.snack.error("Successfully removed student")
+        this.loading = false;
+        this.router.navigateByUrl(`/student/${this.student.Chromebook.serialNumber}`)
+      },
+      error: err => {
+        this.snack.error("Error updating student");
+        this.loading = false;
       }
     })
   }

@@ -2,24 +2,44 @@
 <div class="container" *ngIf="student">
 
   <!--Tickets-->
-  <mat-card *ngIf="student.Tickets.length > 0">
+  <mat-card *ngIf="student.Tickets.length > 0 || student.CompletedTickets.length > 0">
     <mat-card-title>Tickets</mat-card-title>
     <mat-card-content class="small-card">
-      <table class="table">
-        <tr *ngFor="let ticket of student.Tickets">
-          <th>
-            <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
-          </th>
-          <td class="tickets-table-data">
-            <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit">
-              <button mat-raised-button color="accent">Go To Document</button>
-            </a>
-            <button mat-raised-button color="warn" (click)="SetTicketToComplete(ticket.split('+')[0])">Set ticket to
-              complete
-            </button>
-          </td>
-        </tr>
-      </table>
+      <div *ngIf="student.Tickets.length > 0">
+        <h3>Active Tickets</h3>
+        <table class="table">
+          <tr *ngFor="let ticket of student.Tickets">
+            <th>
+              <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
+            </th>
+            <td class="tickets-table-data">
+              <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit">
+                <button mat-raised-button color="accent">Go To Document</button>
+              </a>
+              <button mat-raised-button color="warn" (click)="SetTicketToComplete(ticket.split('+')[0])">Set ticket to
+                complete
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div *ngIf="student.CompletedTickets.length > 0">
+        Completed Tickets
+        <table class="table">
+          <tr *ngFor="let ticket of student.CompletedTickets">
+            <th>
+              <p class="tickets-table-title">{{ticket.split('+')[1]}}</p>
+            </th>
+            <td class="tickets-table-data">
+              <a href="https://docs.google.com/document/d/{{ticket.split('+')[0]}}/edit">
+                <button mat-raised-button color="accent">Go To Document</button>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
     </mat-card-content>
   </mat-card>
 
@@ -163,6 +183,7 @@
         </tr>
 
       </table>
+      <button mat-raised-button color="warn" style="margin-left: 5px" (click)="RemoveStudent()">Remove User from Student</button>
 
 
     </mat-card-content>
