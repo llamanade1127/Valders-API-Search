@@ -10,8 +10,6 @@ function createWindow () {
 
 
 
-  let api = exec('start api.exe', {shell: false, windowsHide: true})
-
   // api.stdout.on('data', data => console.error(data))
   //
   // api.stderr.on('data', data => console.error(data))

@@ -179,6 +179,15 @@ export class ApiService {
       returnNotes: student.ReturnData.notes,
     }
   }
+
+  WipeStudents() {
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+    return this.http.get(`http://localhost:3000/chromebooks/students/wipe`, {headers: headers})
+
+  }
 }
 
 
