@@ -27,6 +27,15 @@ export class ApiService {
     return this.http.get<QueryReturn>(`http://localhost:3000/chromebooks/${type}/${code}/info`, {headers})
   }
 
+  ForceQueryUser(key: string){
+    let headers = {
+      //TODO: Needs to be given by server for release build
+      'authorization': '123456'
+    }
+
+    return this.http.get<UserQueryReturn>(`http://localhost:3000/chromebooks/users/forceQuery?s=${key}`, {headers})
+  }
+
   QueryUser(key: string, type: string = "primaryEmail"): Observable<UserQueryReturn>{
 
     let headers = {
@@ -188,8 +197,33 @@ export class ApiService {
     return this.http.get(`http://localhost:3000/chromebooks/students/wipe`, {headers: headers})
 
   }
+
+  GetTicket(id: string) {
+    let headers = {
+      'authorization': '123456'
+    }
+    return this.http.get<Ticket>(`http://localhost:3000/chromebooks/tickets/${id}/info`, {headers: headers})
+  }
 }
 
+export interface Ticket {
+	studentID: string;
+	damagedDeviceID: string;
+	deviceIssue: string;
+	cause: string;
+	doneDifferently: string;
+	issuedLoaner: boolean;
+	issuedLoanerID: string;
+	chargerIssued: boolean;
+	loanerInGoodCond: boolean;
+	chargerInGoodCond: boolean;
+	notes: string;
+	loanerIssuedBy: string;
+	isDeviceReturned: boolean;
+	dateReturned: string;
+	owner: string;
+	isCurrentlyActive: boolean;
+}
 
 export interface ReturnStudent{
   userID: string;
