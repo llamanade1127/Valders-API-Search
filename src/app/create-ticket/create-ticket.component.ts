@@ -178,7 +178,7 @@ export class CreateTicketComponent implements OnInit {
       })
     }
   }
-
+  
   submitTicket(){
 
   }

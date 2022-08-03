@@ -6,4 +6,3 @@ cd %homedir%/Valders-Chromebook-API/resources/app
 start api.exe
 cd %homedir%
 start /Valders-Chromebook-API/resources/app
-
