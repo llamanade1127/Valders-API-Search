@@ -40,19 +40,19 @@ export class SettingsPageComponent implements OnInit {
     const dialogRef = this.dialog.open(AdminDialog, {
       width: '400px',
     });
-    dialogRef.afterClosed().subscribe((password) => {
+    dialogRef.afterClosed().subscribe((password: any) => {
       //Check password first
       this.api.CheckAdminPassword(password).subscribe({
-        next: value1 => {
+        next: (value1: any) => {
           if(value1)
           {
             this.snack.error("Correct password. Linking students")
             this.api.LinkStudents().subscribe({
-              next: any => {
+              next: () => {
                 this.snack.error("Students linked")
                 this.loading = false;
               },
-              error: error => {
+              error: () => {
                 this.snack.error("error linking students")
                 this.loading = false;
               }
@@ -63,7 +63,7 @@ export class SettingsPageComponent implements OnInit {
           }
 
         },
-        error: err => {
+        error: () => {
           this.loading = false;
           this.snack.error("Incorrect password");
         }
@@ -75,11 +75,11 @@ export class SettingsPageComponent implements OnInit {
   LinkStudentTickets(){
     this.loading = true;
     this.api.LinkTicketsToStudents().subscribe({
-      next: any => {
+      next: () => {
         this.snack.error("Updated Tickets")
         this.loading = false;
       },
-      error: error => {
+      error: () => {
         this.snack.error("Error updating tickets")
         this.loading = false;
       }
@@ -112,18 +112,43 @@ export class SettingsPageComponent implements OnInit {
       data[sIndex] = sData;
 
     }
+  }
 
+  WipeStudents() {
+    this.loading = true;
+    const dialogRef = this.dialog.open(AdminDialog, {
+      width: '400px',
+    });
+    dialogRef.afterClosed().subscribe((password: any) => {
+      //Check password first
+      this.api.CheckAdminPassword(password).subscribe({
+        next: (value1: any) => {
+          if(value1)
+          {
+            this.snack.error("Correct password. Wiping students")
+            this.api.WipeStudents().subscribe({
+              next: () => {
+                this.loading = false;
+                this.snack.error('Students wiped')
+              },
+              error: () => {
+                this.loading = false;
+                this.snack.error('Students failed to wipe!')
+              }
+            })
+          } else {
+            this.loading = false;
+            this.snack.error("Incorrect password")
+          }
 
-    this.api.UpdateConfig(data).subscribe({
-      next: value1 => {
-        this.loading = false
-      },
-      error: error => {
-        console.error(error)
-        this.loading = false;
-      }
+        },
+        error: () => {
+          this.loading = false;
+          this.snack.error("Incorrect password");
+        }
+      })
+
     })
-
   }
 
 }

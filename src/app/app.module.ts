@@ -37,6 +37,9 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { CreateStudentComponent } from './create-student/create-student.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatDialogModule} from "@angular/material/dialog";
+import { TicketComponent } from './ticket/ticket.component';
+import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { MatStepperModule } from'@angular/material/stepper'
 
 @NgModule({
   declarations: [
@@ -52,7 +55,9 @@ import {MatDialogModule} from "@angular/material/dialog";
     AssignStudentToChromebookComponent,
     AssignUserToChromebookComponent,
     AdminDialog,
-    CreateStudentComponent
+    CreateStudentComponent,
+    TicketComponent,
+    CreateTicketComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +85,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatIconModule,
     MatAutocompleteModule,
     MatButtonToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

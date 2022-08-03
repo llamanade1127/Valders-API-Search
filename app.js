@@ -3,14 +3,12 @@ const url = require("url");
 const path = require("path");
 const {exec, spawn} = require('child_process')
 let mainWindow
-
+let api;
 function createWindow () {
   //TODO: Load API Locally
 
+  api = exec('start api.exe', {shell: false, windowsHide: true})
 
-
-
-  let api = exec('start api.exe', {shell: false, windowsHide: true})
 
   // api.stdout.on('data', data => console.error(data))
   //
@@ -33,9 +31,10 @@ function createWindow () {
     })
   );
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
+    api.kill()
     mainWindow = null
   })
 }
@@ -43,6 +42,7 @@ function createWindow () {
 app.on('ready', createWindow)
 
 app.on('window-all-closed', function () {
+  api.kill()
   if (process.platform !== 'darwin') app.quit()
 })
 
