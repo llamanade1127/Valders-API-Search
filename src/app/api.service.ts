@@ -204,23 +204,34 @@ export class ApiService {
     }
     return this.http.get<Ticket>(`http://localhost:3000/chromebooks/tickets/${id}/info`, {headers: headers})
   }
+
+  CreateTicket(ticket: Ticket) {
+    let headers = {
+      'authorization': '123456'
+    }
+    return this.http.post(`http://localhost:3000/chromebooks/tickets/create`,ticket, {headers: headers})
+  }
 }
 
 export interface Ticket {
 	studentID: string;
+	gradYear: string;
+	ticketIssue: string;
 	damagedDeviceID: string;
 	deviceIssue: string;
 	cause: string;
+	beenAvoided: boolean;
 	doneDifferently: string;
 	issuedLoaner: boolean;
 	issuedLoanerID: string;
+  issuedLoanerNumber: string;
 	chargerIssued: boolean;
 	loanerInGoodCond: boolean;
 	chargerInGoodCond: boolean;
 	notes: string;
 	loanerIssuedBy: string;
 	isDeviceReturned: boolean;
-	dateReturned: string;
+	dateReturned?: string;
 	owner: string;
 	isCurrentlyActive: boolean;
 }

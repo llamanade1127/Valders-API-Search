@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApiService, Chromebook, Student } from '../api.service';
+import { ApiService, Chromebook, Student, Ticket } from '../api.service';
 import { ChromebookDataComponent } from '../chromebook-data/chromebook-data.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { ChromebookDataComponent } from '../chromebook-data/chromebook-data.comp
 })
 export class CreateTicketComponent implements OnInit {
 
-
+  FormIndex = 0;
   studentInfoForm = this.fb.group({
     studentID: ['', [Validators.required]],
     gradYear: ['', [Validators.required]],
@@ -20,22 +20,22 @@ export class CreateTicketComponent implements OnInit {
   damagedDeviceForm = this.fb.group({
     deviceID: ['', [Validators.required]],
     cause: ['', [Validators.required]],
-    deviceIssue: ['', [Validators.required]], 
-    beenAvoided: ['', [Validators.required]], 
+    deviceIssue: ['', [Validators.required]],
+    beenAvoided: ['', [Validators.required]],
     doneDifferently: ['', [Validators.required]],
-    isLoaner: ['', Validators.required], 
-    givenLoaner: ['', [Validators.required]], 
+    isLoaner: ['', Validators.required],
+    givenLoaner: ['', [Validators.required]],
   })
 
   loanerForm = this.fb.group({
-    loanerID: ['',[Validators.required]], 
+    loanerID: ['',[Validators.required]],
     loanerNumber: ['',[Validators.required]],
     givenCharger: ['',[Validators.required]],
   })
 
   finalForm = this.fb.group({
-    notes: ['', [Validators.required]], 
-    createdBy: ['',[Validators.required]] 
+    notes: ['', [Validators.required]],
+    createdBy: ['',[Validators.required]]
   })
 
 
@@ -64,7 +64,7 @@ export class CreateTicketComponent implements OnInit {
     //   givenCharger: ['',[Validators.required]],
     //   createdBy: ['',[Validators.required]] //Return Notes Index
     // })
-  
+
   }
 
   get ticketIssue(){
@@ -75,19 +75,22 @@ export class CreateTicketComponent implements OnInit {
     return this.damagedDeviceForm.get('givenLoaner')
   }
 
+  gradYear = ""
   previousStudent = ""
+  setGradYear = false;
   foundStudent = false;
   //@ts-ignore
   Student: Student;
   checkStudent(){
-  
+
     setTimeout(() => {
       let student = this.studentInfoForm.get('studentID')?.value;
-      
-      if(student != this.previousStudent && student){
+
+      if(student != this.previousStudent && student && this.FormIndex === 0){
         this.previousStudent = student;
         this.api.ForceQueryUser(student).subscribe({
           next: user => {
+
             this.api.QueryStudent(user.data.id).subscribe({
               next: student => {
                 this.Student = student.student;
@@ -95,21 +98,37 @@ export class CreateTicketComponent implements OnInit {
                   this.Chromebook = student.student.Chromebook;
                   this.chromebookKey = this.Chromebook.serialNumber;
                 }
+                if(!this.setGradYear)
+                {
+                  //@ts-ignore
+                  this.gradYear = this.Student.GInfo.orgUnitPath.split('/').pop()
+                }
                 this.foundStudent = true;
               },
               error: err => {
+                this.setGradYear = false;
+                this.gradYear = ""
                 this.foundStudent = false;
               }
             })
           }, error: err => {
+            this.setGradYear = false;
+            this.gradYear = ""
             this.foundStudent = false;
           }
         })
       }
-      console.log(this.studentInfoForm.get('studentID')?.value)
-      this.checkStudent()
-      this.checkChromebook();
-      this.checkLoanerID();
+      //console.log(this.studentInfoForm.get('studentID')?.value);
+      switch (this.FormIndex) {
+        case 1:
+          this.checkChromebook();
+          break;
+        case 2:
+          this.checkLoanerID();
+          break;
+
+      }
+      this.checkStudent();
     }, 1000)
 
 
@@ -178,9 +197,41 @@ export class CreateTicketComponent implements OnInit {
       })
     }
   }
-  
-  submitTicket(){
 
+  submitTicket(){
+    let ticket: Ticket = {
+      studentID: this.Student.GInfo.id,
+      //@ts-ignore
+      gradYear: this.gradYear,
+      //@ts-ignore
+      ticketIssue: this.ticketIssue?.value,
+      damagedDeviceID: this.Chromebook.serialNumber,
+      //@ts-ignore
+      deviceIssue: this.damagedDeviceForm.get('deviceIssue')?.value,
+      //@ts-ignore
+      cause: this.damagedDeviceForm.get('cause')?.value,
+      beenAvoided: this.damagedDeviceForm.get('beenAvoided')?.value === "true",
+      //@ts-ignore
+      doneDifferently: this.damagedDeviceForm.get('doneDifferently')?.value,
+      issuedLoaner: this.damagedDeviceForm.get('givenLoaner')?.value === "true",
+      //@ts-ignore
+      issuedLoanerID: this.loanerForm.get('loanerID')?.value,
+      //@ts-ignore
+      chargerIssued: this.loanerForm.get('givenCharger')?.value,
+      loanerInGoodCond: false,
+      chargerInGoodCond: false,
+      //@ts-ignore
+      notes: this.finalForm.get('notes')?.value,
+      //@ts-ignore
+      loanerIssuedBy: this.finalForm.get('createdBy')?.value,
+      isDeviceReturned: false,
+      dateReturned: "",
+      //@ts-ignore
+      owner: this.finalForm.get('createdBy')?.value,
+      isCurrentlyActive: true
+    }
+
+    console.log(ticket)
   }
   // get givenLoaner(){
   //   return this.form.get('givenLoaner')?.value;
@@ -189,3 +240,4 @@ export class CreateTicketComponent implements OnInit {
   //   return this.form.get('ticketIssue')?.value;
   // }
 }
+
