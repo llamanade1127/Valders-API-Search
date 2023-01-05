@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>WARNING!</h1>
+<div mat-dialog-content>
+  <p>You are about to do a action that is irreversible! Please enter the admin password to continue</p>
+  <mat-form-field appearance="fill">
+    <input matInput type="password" placeholder="password" [(ngModel)]="password">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="password" cdkFocusInitial>Ok</button>
+</div>
