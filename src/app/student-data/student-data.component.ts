@@ -147,6 +147,7 @@ export class StudentDataComponent implements OnInit {
         this.loading = false;
       }
     })
+
   }
 
 }

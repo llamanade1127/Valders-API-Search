@@ -1,0 +1,64 @@
+<!--TODO: Card with tickets, Card with active day loaners, Data on tickets-->
+<mat-progress-bar mode="indeterminate" *ngIf=" (oTickets | async)?.length == 0"></mat-progress-bar>
+
+<div class="container">
+
+  <div *ngIf="!isLoading" class="Active-Tickets" >
+    <mat-card>
+      <mat-card-content>
+        <h2>Active Tickets</h2>
+        <table class="table">
+          <tr *ngFor="let ticket of oTickets | async">
+            <th>
+              <p class="tickets-table-title">{{ticket.studentName}} : {{ticket.deviceIssue}}<br/>Created by {{ticket.owner}} at {{TicketDateString(ticket)}}</p>
+            </th>
+            <td class="tickets-table-data">
+              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/active/{{ticket._id}}">
+                <button mat-raised-button color="accent">Go To Ticket</button>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="Day-Loaners">
+    <mat-card>
+      <mat-card-content>
+        <h2>Active Day Loaners</h2>
+        <div *ngIf="!isLoading">
+          <table class="table">
+            <tr *ngFor="let dayLoaner of oActiveDayLoaners | async" [style.background-color]="IsOld(dayLoaner.ticket) ? 'red' : 'none'" >
+              <th>
+                <p class="tickets-table-title">Loaner For {{dayLoaner.ticket.studentName}}<br/>{{TicketDateString(dayLoaner.ticket)}}</p>
+              </th>
+              <td class="tickets-table-data">
+                <a routerLink="/chromebook/{{dayLoaner.ticket.damagedDeviceID}}/tickets/active/{{dayLoaner.ticket._id}}">
+                  <button mat-raised-button color="accent">Go To Ticket</button>
+                </a>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="Statistics">
+    <mat-card>
+      <mat-card-title>
+        Statistics
+      </mat-card-title>
+      <mat-card-content>
+        <h2>Current Tickets: {{ticketCount}}</h2>
+        <h2>Tickets Made Today: {{numberToday}}</h2>
+        <h2>Day Loaners: {{dayLoanerCount}}</h2>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+</div>

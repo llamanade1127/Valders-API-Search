@@ -40,6 +40,15 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { TicketComponent } from './ticket/ticket.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { MatStepperModule } from'@angular/material/stepper'
+import {AdminTicketDeleteDialog, TicketComponent} from "./Templates/ticket/ticket.component";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { NavComponent } from './Templates/nav/nav.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatListModule} from "@angular/material/list";
+import {MatMenuModule} from "@angular/material/menu";
+import { HomeComponent } from './home/home.component';
+import { SearchDirectiveDirective } from './create-ticket/search-directive.directive';
 
 @NgModule({
   declarations: [
@@ -57,7 +66,9 @@ import { MatStepperModule } from'@angular/material/stepper'
     AdminDialog,
     CreateStudentComponent,
     TicketComponent,
-    CreateTicketComponent
+    NavComponent,
+    HomeComponent,
+    SearchDirectiveDirective
   ],
   imports: [
     BrowserModule,

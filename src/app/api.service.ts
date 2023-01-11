@@ -36,6 +36,8 @@ export class ApiService {
     return this.http.get<UserQueryReturn>(`http://localhost:3000/chromebooks/users/forceQuery?s=${key}`, {headers})
   }
 
+
+
   QueryUser(key: string, type: string = "primaryEmail"): Observable<UserQueryReturn>{
 
     let headers = {
@@ -209,13 +211,45 @@ export class ApiService {
     let headers = {
       'authorization': '123456'
     }
-    return this.http.post(`http://localhost:3000/chromebooks/tickets/create`,ticket, {headers: headers})
+    return this.http.post<CreateTicketReturn>(`http://localhost:3000/tickets/create`,ticket, {headers: headers})
+  }
+
+  QueryTicket(query:any){
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.get<TicketQueryReturn>(`http://localhost:3000/tickets/search?query=${JSON.stringify(query)}`, {headers: headers} )
+  }
+
+  UpdateTicket(Ticket: Ticket) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.patch(`http://localhost:3000/tickets/${Ticket._id}/patch`, Ticket,{headers: headers} )
+
+  }
+
+  DeleteTicket(Ticket: Ticket) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.delete(`http://localhost:3000/tickets/${Ticket._id}/delete`, {headers: headers} )
+
+  }
+
+  GetAllTickets() {
+    return this.QueryTicket("{}");
   }
 }
 
 export interface Ticket {
 	studentID: string;
+  studentName: string;
 	gradYear: string;
+  cubbyNumber: string;
 	ticketIssue: string;
 	damagedDeviceID: string;
 	deviceIssue: string;
@@ -593,7 +627,14 @@ export interface StudentArrayQueryReturn {
   students: Student[];
 }
 
-
+export interface  TicketQueryReturn {
+  time: string,
+  tickets: Ticket[]
+}
+export interface CreateTicketReturn {
+  time: string,
+  ticket: Ticket
+}
 export interface ReturnInfoQuery {
   sheetID: string,
   sheetPage: string,

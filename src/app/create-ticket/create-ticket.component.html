@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="ticket-card">
     <mat-card-title>
         Create Ticket
     </mat-card-title>
@@ -9,16 +9,19 @@
                 <ng-template matStepLabel>Student Info</ng-template>
                 <form [formGroup]="studentInfoForm" class="studentForm" (ngSubmit)="checkStudent()">
                     <mat-form-field appearance="fill" class="div1">
-                        <mat-label>Student ID, Email, Name</mat-label>
+                        <mat-label>Student ID, Email, Name, or assigned chromebook</mat-label>
                         <input
                           matInput
                           [(ngModel)]="currentStudentID"
                           formControlName="studentID"
                           type="text"
                           placeholder="email"
-                          autocomplete="off"/>
+                          autocomplete="off"
+                          [appSearchDirective]="checkStudent.bind(this)"
+                          />
                           <mat-hint align="end" *ngIf="foundStudent">{{Student.Name}}</mat-hint>
-                          <mat-hint align="end" *ngIf="!foundStudent">Could not find student</mat-hint>
+                          <mat-hint align="end" *ngIf="!foundStudent && !searching">Could not find student. Press enter to search...</mat-hint>
+                          <mat-hint align="end" *ngIf="!foundStudent && searching">Searching...</mat-hint>
                     </mat-form-field>
 
                     <mat-form-field appearance="fill" class="div2">
@@ -42,7 +45,7 @@
 
                 </form>
                 <div>
-                    <button mat-button matStepperNext color="accent" (click)="FormIndex = 1">Next</button>
+                    <button mat-button matStepperNext color="accent" (click)="moveForward()" [disabled]="studentInfoForm.invalid">Next</button>
                 </div>
             </mat-step>
             <mat-step [stepControl]="damagedDeviceForm" *ngIf="ticketIssue?.value !== 'Day Loaner' && ticketIssue?.value">
@@ -56,8 +59,10 @@
                           formControlName="deviceID"
                           type="text"
                           placeholder="VASD0001"
-                          autocomplete="off"/>
-                          <mat-hint align="end" *ngIf="foundChromebook">{{Chromebook.annotatedAssetId}}</mat-hint>
+                          autocomplete="off"
+                          [appSearchDirective]="checkDamagedDeviceID.bind(this)"
+                          />
+                          <mat-hint align="end" *ngIf="foundChromebook">{{isVASD ? Chromebook.serialNumber : Chromebook.annotatedAssetId}}</mat-hint>
                           <mat-hint align="end" *ngIf="!foundChromebook">Could not find Chromebook</mat-hint>
                     </mat-form-field>
 
@@ -65,12 +70,20 @@
 
                     <mat-form-field appearance="fill" class="div2">
                         <mat-label>Device Issue</mat-label>
+
+                        <mat-select formControlName="deviceIssue">
+                            <mat-option *ngFor="let issue of commonIssues" value="{{issue}}">{{issue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="other">
+                        <mat-label>More Info (Not Required)</mat-label>
                         <input
-                          matInput
-                          formControlName="deviceIssue"
-                          type="text"
-                          placeholder="Boken Screen"
-                          autocomplete="off"/>
+                        matInput
+                        formControlName="otherIssue"
+                        type="text"
+                        placeholder="Ex. Needs OS Reboot"
+                        autocomplete="off"/>
                     </mat-form-field>
 
 
@@ -80,7 +93,7 @@
                           matInput
                           formControlName="cause"
                           type="text"
-                          placeholder="Not dropped it"
+                          placeholder="Ex. Dropped device"
                           autocomplete="off"/>
                     </mat-form-field>
 
@@ -99,7 +112,7 @@
                           matInput
                           formControlName="doneDifferently"
                           type="text"
-                          placeholder="Not dropped it"
+                          placeholder="Ex. Not dropped it"
                           autocomplete="off"/>
                     </mat-form-field>
 
@@ -121,11 +134,20 @@
                         </mat-select>
                     </mat-form-field>
 
+                  <mat-form-field appearance="fill" >
+                    <mat-label>Cubby Number</mat-label>
+                    <input
+                      matInput
+                      formControlName="cubbyNumber"
+                      type="text"
+                      placeholder="Ex: A1"
+                      autocomplete="off"/>
+                  </mat-form-field>
 
                 </form>
                 <div>
-                    <button mat-button matStepperPrevious color="accent" (click)="FormIndex = 0">Previous</button>
-                    <button mat-button matStepperNext color="accent" (click)="FormIndex = 2" >Next</button>
+                    <button mat-button matStepperPrevious color="accent" (click)="moveBackward()">Previous</button>
+                    <button mat-button matStepperNext color="accent" (click)="moveForward()" [disabled]="damagedDeviceForm.invalid">Next</button>
                 </div>
             </mat-step>
             <mat-step [stepControl]="loanerForm" *ngIf="ticketIssue?.value == 'Day Loaner' && ticketIssue?.value || givenLoaner?.value == 'true'">
@@ -138,7 +160,8 @@
                           formControlName="loanerID"
                           type="text"
                           placeholder="VASDL001"
-                          autocomplete="off"/>
+                          autocomplete="off"
+                          [appSearchDirective]="checkLoanerID.bind(this)"/>
                           <mat-hint align="end" *ngIf="foundLoaner">{{loaner.serialNumber}}:{{loaner.model}}</mat-hint>
                           <mat-hint align="end" *ngIf="!foundLoaner">Could not find Chromebook</mat-hint>
 
@@ -158,15 +181,15 @@
                     <mat-form-field appearance="fill" class="div3">
                         <mat-label>Given Charger</mat-label>
                         <mat-select formControlName="givenCharger">
-                            <mat-option value=true>Yes</mat-option>
-                            <mat-option value=false >No</mat-option>
+                            <mat-option value="true">Yes</mat-option>
+                            <mat-option value="false" >No</mat-option>
 
                         </mat-select>
                     </mat-form-field>
                 </form>
                 <div>
-                    <button mat-button matStepperPrevious color="accent" (click)="FormIndex = 1">Previous</button>
-                    <button mat-button matStepperNext color="accent" (click)="FormIndex = 3">Next</button>
+                    <button mat-button matStepperPrevious color="accent" (click)="moveBackward()">Previous</button>
+                    <button mat-button matStepperNext color="accent" (click)="moveForward()" [disabled]="loanerForm.invalid">Next</button>
                 </div>
             </mat-step>
             <mat-step [stepControl]="finalForm">
@@ -193,157 +216,14 @@
                     </mat-form-field>
                 </form>
                 <div>
-                    <button mat-button matStepperPrevious color="accent"(click)="FormIndex = 2">Previous</button>
-                    <button mat-button (click)="submitTicket()" color="accent">Submit</button>
+                    <button mat-button matStepperPrevious color="accent" (click)="moveBackward()" >Previous</button>
+                    <button mat-button (click)="submitTicket()" color="accent" [disabled]="finalForm.invalid">Submit</button>
+                    <button mat-raised-button color="accent" [disabled]="!created" routerLink="{{ticketPath}}">View Ticket</button>
+                    <button mat-button color="warn" routerLink="../../">Return to home</button>
                 </div>
             </mat-step>
         </mat-stepper>
 
-        <!-- <form [formGroup]="form" class="parent">
-
-            <mat-form-field appearance="fill" class="div1">
-                <mat-label>Student ID, Email or Name</mat-label>
-                <input
-                  matInput
-                  formControlName="studentID"
-                  type="text"
-                  placeholder="email"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div2">
-                <mat-label>Graduation Year</mat-label>
-                <input
-                  matInput
-                  formControlName="gradYear"
-                  type="text"
-                  placeholder="2022"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-
-            <mat-form-field appearance="fill" class="div3">
-                <mat-label>Issue</mat-label>
-                <mat-select formControlName="ticketIssue">
-                    <mat-option value="Day Loaner">Day loaner</mat-option>
-                    <mat-option value="Damaged Device" >Damaged Device</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-            <mat-form-field appearance="fill" class="div4">
-                <mat-label>Damaged Device ID</mat-label>
-                <input
-                  matInput
-                  formControlName="deviceID"
-                  type="text"
-                  placeholder="VASD0001"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div5">
-                <mat-label>Is loaner</mat-label>
-                <mat-select formControlName="isLoaner">
-                    <mat-option value=true>Yes</mat-option>
-                    <mat-option value=false >No</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div6">
-                <mat-label>Device Issue</mat-label>
-                <input
-                  matInput
-                  formControlName="deviceIssue"
-                  type="text"
-                  placeholder="Boken Screen"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-
-            <mat-form-field appearance="fill" class="div7">
-                <mat-label>Cause</mat-label>
-                <input
-                  matInput
-                  formControlName="cause"
-                  type="text"
-                  placeholder="Not dropped it"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div8">
-                <mat-label>What could you have done differently</mat-label>
-                <input
-                  matInput
-                  formControlName="doneDifferently"
-                  type="text"
-                  placeholder="Not dropped it"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div9">
-                <mat-label>Notes</mat-label>
-                <textarea
-                  matInput
-                  formControlName="notes"
-                  type="text"
-                  placeholder="Bla bla bla"
-                  autocomplete="off"></textarea>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="div10">
-                <mat-label>Was given loaner</mat-label>
-
-                <mat-select formControlName="givenLoaner" [ngModel]="ticketIssue">
-                    <mat-option value=true>Yes</mat-option>
-                    <mat-option value=false >No</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <div class="div11" *ngIf="!givenLoaner"></div>
-            <mat-form-field appearance="fill" class="div11" *ngIf="givenLoaner">
-                <mat-label>Loaner ID</mat-label>
-                <input
-                  matInput
-                  formControlName="loanerID"
-                  type="text"
-                  placeholder="Bla bla bla"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <div class="div12" *ngIf="!givenLoaner"></div>
-            <mat-form-field appearance="fill" class="div12" *ngIf="givenLoaner">
-                <mat-label>Given Charger</mat-label>
-                <mat-select formControlName="givenCharger">
-                    <mat-option value=true>Yes</mat-option>
-                    <mat-option value=false >No</mat-option>
-
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="div13">
-                <mat-label>Created By</mat-label>
-                <input
-                  matInput
-                  formControlName="createdBy"
-                  type="text"
-                  placeholder="Bla bla bla"
-                  autocomplete="off"/>
-            </mat-form-field>
-
-            <div class="div14">
-
-            </div>
-            <div class="div15"></div>
-            <button
-            color="primary"
-            mat-raised-button
-            type="submit"
-            [disabled]="loading"
-          >
-
-            Create Ticket
-          </button>
-          <button mat-raised-button color="warn" routerLink="/">Return</button>
-        </form> -->
 
     </mat-card-content>
 </mat-card>

@@ -15,6 +15,7 @@
             <mat-option value="student">Student</mat-option>
             <mat-option value="user">Google User</mat-option>
             <mat-option value="chromebook">Chromebook</mat-option>
+            <mat-option value="ticket">Ticket</mat-option>
             <mat-option value="all">All</mat-option>
           </mat-select>
         </mat-form-field>
@@ -35,13 +36,36 @@
             <mat-option value="assignedChromebook" *ngIf="search?.value == 'student'">Assigned Chromebook SN</mat-option>
             <mat-option value="name" *ngIf="search?.value == 'student'">Name</mat-option>
 
+            <div *ngIf="search?.value =='ticket'">
+              <mat-option *ngFor="let ticketOptions of ticketSearchOptions" value="{{ticketOptions[0]}}">{{ticketOptions[1]}}</mat-option>
+
+            </div>
+
+
+
           </mat-select>
           <mat-hint align="end" *ngIf="search?.value == 'chromebook'">Either search by VASD or serial number</mat-hint>
           <mat-hint align="end" *ngIf="search?.value == 'user'">Either search by Email or Student ID</mat-hint>
           <mat-hint align="end" *ngIf="search?.value == 'student'">Either search by Email, Student ID, Name, or Chromebook Serial Number</mat-hint>
         </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="type?.value == 'deviceIssue'">
+          <mat-label>Search For</mat-label>
+          <mat-select formControlName="ticketSelectOptions">
+            <mat-option *ngFor="let opt of commonIssues" value="{{opt}}">{{opt}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        <mat-form-field [color]="code?.valid && 'accent'" *ngIf="search?.value != ''">
+        <mat-form-field appearance="fill" *ngIf="type?.value == 'ticketIssue'">
+          <mat-label>Search For</mat-label>
+          <mat-select formControlName="code">
+            <mat-option value="Day Loaner">Day Loaner</mat-option>
+            <mat-option value="Damaged Device">Damaged Device</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-slide-toggle ngModel="true" *ngIf="search?.value == 'ticket'"  formControlName="searchForActive">Search For Only Active</mat-slide-toggle>
+
+        <mat-form-field [color]="code?.valid && 'accent'" *ngIf="search?.value != '' && type?.value != 'all' && type?.value != 'deviceIssue' && type?.value != 'ticketIssue'">
           <input
             matInput
             formControlName="code"
@@ -55,8 +79,8 @@
           </mat-error>
         </mat-form-field>
 
-
-        <button *ngIf="search?.value != ''"
+        <div *ngIf="type?.value == 'all'"></div>
+        <button *ngIf="search?.value != '' "
                 mat-stroked-button
                 type="submit"
                 [disabled]="loading"
@@ -72,18 +96,30 @@
   <mat-card>
     <button mat-raised-button routerLink="/settings" color="accent">Settings</button>
     <button mat-raised-button routerLink="/create/ticket" color="accent">Create Ticket</button>
+    <button mat-raised-button routerLink="/home" color="primary">Home Page</button>
   </mat-card>
 
-    <div class="chromebook-data-container">
-      <div *ngIf="chromebook">
-        <app-chromebook-data [chromebook]="chromebook"></app-chromebook-data>
-      </div>
-      <div *ngIf="student">
-        <app-student-data [student]="student"></app-student-data>
-      </div>
-      <div *ngIf="user">
-        <app-user-data [user]="user"></app-user-data>
-      </div>
 
-    </div>
+  <div class="tickets" *ngIf="tickets.length > 0">
+    <mat-card>
+      <mat-card-title>
+        Tickets
+      </mat-card-title>
+      <mat-card-content>
+        <table class="table">
+          <tr *ngFor="let ticket of tickets">
+            <th>
+              <p class="tickets-table-title">{{ticket.studentName}} : {{ticket.deviceIssue == "NA" ? "Day Loaner for " + ticket.studentName : ticket.deviceIssue}} : {{ticket.damagedDeviceID}} : {{ticket.isCurrentlyActive ? "Active" : "Completed" }} </p>
+            </th>
+            <td class="tickets-table-data">
+              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/{{ticket.isCurrentlyActive ? 'active' : 'completed' }}/{{ticket._id}}">
+                <button mat-raised-button color="accent">Go To Ticket</button>
+              </a>
+            </td>
+          </tr>
+        </table>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

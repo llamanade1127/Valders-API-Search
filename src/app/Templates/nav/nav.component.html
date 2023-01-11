@@ -1,0 +1,44 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="'navigation'"
+               [mode]="'side'"
+               [opened]="false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+
+      <a mat-list-item routerLink="/" (click)="drawer.close()">Home</a>
+      <a mat-list-item routerLink="/create/ticket" (click)="drawer.close()">Create Ticket</a>
+      <a mat-list-item routerLink="/settings" (click)="drawer.close()">Settings</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <span class="logo" routerLink="/">Valders API</span>
+
+      <span class="fill-space"></span>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="/home">
+          <span>Home</span>
+        </a>
+        <a mat-menu-item routerLink="/">
+          <span>Search</span>
+        </a>
+        <a mat-menu-item routerLink="/create/ticket">
+          <span>Create a ticket</span>
+        </a>
+        <a mat-menu-item routerLink="/settings">
+          <span>Settings</span>
+        </a>
+
+      </mat-menu>
+    </mat-toolbar>
+
+    <ng-content></ng-content>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -80,6 +80,8 @@
         </tr>
 
       </table>
+
+
       <div>
         <button mat-raised-button color="accent" routerLink="/chromebook/{{chromebook.serialNumber}}/addStudent" *ngIf="!hasStudent">Assign Chromebook</button>
         <button mat-raised-button color="accent" routerLink="/student/{{chromebook.serialNumber}}" *ngIf="hasStudent">Go To Student Page</button>
@@ -88,6 +90,30 @@
     </mat-card-content>
   </mat-card>
 
+  <mat-card *ngIf="assignedTickets.length > 0">
+    <mat-card-title>
+      Tickets
+    </mat-card-title>
+
+    <mat-card-content>
+      <div>
+        <h3>Active Tickets</h3>
+        <table class="table">
+          <tr *ngFor="let ticket of assignedTickets">
+            <th>
+              <p class="tickets-table-title">{{ticket.ticketIssue === "Day Loaner" ? "Day Loaner" : ticket.deviceIssue}}</p>
+            </th>
+            <td class="tickets-table-data">
+              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/active/{{ticket._id}}">
+                <button mat-raised-button color="accent">Go To Ticket</button>
+                <button mat-raised-button *ngIf="isLoaner" color="primary" (click)="setTicketToComplete(ticket)">Set ticket to complete</button>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
 
 </div>
