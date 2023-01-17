@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ApiService, Chromebook, Student, Ticket} from "../../api.service";
 import {ActivatedRoute} from "@angular/router";
 import {SnackBarService} from "../../snack-bar.service";
 import { combineLatest } from 'rxjs';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AdminDialog} from "../../settings-page/settings-page.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {PdfDialog} from "../pdf/pdf.component";
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
@@ -18,6 +19,7 @@ export class TicketComponent implements OnInit {
     chargerCond: ['', [Validators.required]],
     loanerCond: ['', [Validators.required]],
     deviceReturned: ['', [Validators.required]],
+    status: ['', []]
   })
 
   //@ts-ignore
@@ -28,6 +30,9 @@ export class TicketComponent implements OnInit {
   Student: Student;
   //@ts-ignore
   Chromebook: Chromebook;
+
+  //@ts-ignore
+  loanerChromebook: Chromebook;
   loading = true;
   constructor(private fb: FormBuilder,private route: ActivatedRoute, private api: ApiService, private snack: SnackBarService, public dialog: MatDialog) { }
 
@@ -45,10 +50,19 @@ export class TicketComponent implements OnInit {
             this.form.get('deviceReturned')?.setValue(this.Ticket.isDeviceReturned ? "true" : "false");
             this.form.get('loanerCond')?.setValue(this.Ticket.loanerInGoodCond ? "true" : "false");
             this.form.get('chargerCond')?.setValue(this.Ticket.chargerInGoodCond ? "true" : "false");
-
+            this.form.get('status')?.setValue(this.Ticket.status);
 
             let students = this.api.QueryStudent(ticket.tickets[0].studentID);
             let chromebook = this.api.QueryChromebook("SERIAL", ticket.tickets[0].damagedDeviceID);
+
+            if(ticket.tickets[0].issuedLoaner) {
+              this.api.QueryChromebook('SERIAL', ticket.tickets[0].issuedLoanerID).subscribe({
+                next: (d) => this.loanerChromebook = d.chromebook,
+                error: () => {
+                  this.api.QueryChromebook('VASD', ticket.tickets[0].issuedLoanerID).subscribe((d) => this.loanerChromebook = d.chromebook)
+                }
+              });
+            }
 
 
 
@@ -84,6 +98,9 @@ export class TicketComponent implements OnInit {
 
   updateTicket(){
     this.loading = true;
+
+    //@ts-ignore
+    this.Ticket.status = this.form.get('status')?.value;
     console.log(this.Ticket)
     this.api.UpdateTicket(this.Ticket).subscribe({
       next: value => {
@@ -142,7 +159,13 @@ export class TicketComponent implements OnInit {
 
 
   printTicket() {
-    window.print();
+    const dialogRef = this.dialog.open(PdfDialog, {
+      data: {ticket: this.Ticket, damagedDevice: this.Chromebook, loanerChromebook: this.loanerChromebook},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
 }
@@ -154,9 +177,13 @@ export class TicketComponent implements OnInit {
 export class AdminTicketDeleteDialog {
   //@ts-ignore
   password: string;
+  //@ts-ignore
+  form: FormGroup;
   constructor(public dialogRef: MatDialogRef<AdminTicketDeleteDialog>) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 }
+
+

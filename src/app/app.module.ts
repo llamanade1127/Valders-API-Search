@@ -11,7 +11,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -37,7 +36,6 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { CreateStudentComponent } from './create-student/create-student.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatDialogModule} from "@angular/material/dialog";
-import { TicketComponent } from './ticket/ticket.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 import { MatStepperModule } from'@angular/material/stepper'
 import {AdminTicketDeleteDialog, TicketComponent} from "./Templates/ticket/ticket.component";
@@ -49,6 +47,15 @@ import {MatListModule} from "@angular/material/list";
 import {MatMenuModule} from "@angular/material/menu";
 import { HomeComponent } from './home/home.component';
 import { SearchDirectiveDirective } from './create-ticket/search-directive.directive';
+import {MatSortModule} from "@angular/material/sort";
+import {MatTabsModule} from "@angular/material/tabs";
+import {PdfComponent, PdfDialog} from './Templates/pdf/pdf.component';
+import {NgxPrintModule} from "ngx-print";
+import {AddLoanerDialog, LoanersComponent} from './home/tables/loaners/loaners.component';
+import { AllLoanersComponent } from './home/tables/all-loaners/all-loaners.component';
+import { CompletedTicketsComponent } from './home/tables/completed-tickets/completed-tickets.component';
+import { ConfigSettingsComponent } from './home/config-settings/config-settings.component';
+import {UpdateAdminPasswordDialog} from "./home/config-settings/dialog/admin-dialog";
 
 @NgModule({
   declarations: [
@@ -64,41 +71,58 @@ import { SearchDirectiveDirective } from './create-ticket/search-directive.direc
     AssignStudentToChromebookComponent,
     AssignUserToChromebookComponent,
     AdminDialog,
+    UpdateAdminPasswordDialog,
+    AddLoanerDialog,
+    AdminTicketDeleteDialog,
     CreateStudentComponent,
+    CreateTicketComponent,
     TicketComponent,
     NavComponent,
     HomeComponent,
-    SearchDirectiveDirective
+    SearchDirectiveDirective,
+    PdfComponent,
+    PdfDialog,
+    LoanersComponent,
+    AllLoanersComponent,
+    CompletedTicketsComponent,
+    ConfigSettingsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatProgressBarModule,
-    MatSidenavModule,
-    MatSnackBarModule,
-    ClipboardModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatCheckboxModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    MatButtonToggleModule,
-    MatDialogModule,
-    MatStepperModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCardModule,
+        MatButtonModule,
+        MatNativeDateModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatProgressBarModule,
+        MatSidenavModule,
+        MatSnackBarModule,
+        ClipboardModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatCheckboxModule,
+        FormsModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        MatButtonToggleModule,
+        MatDialogModule,
+        MatStepperModule,
+        MatDividerModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        MatListModule,
+        MatMenuModule,
+        MatSortModule,
+        MatTabsModule,
+      NgxPrintModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

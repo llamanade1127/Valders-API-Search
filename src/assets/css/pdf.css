@@ -1,0 +1,65 @@
+.container {
+  width: 21cm;
+  display: flow;
+  overflow: hidden;
+}
+.container .header {
+  display: flex;
+  flex-direction: row;
+  max-height: fit-content;
+  justify-content: space-between;
+  padding: 10px;
+  text-align: inherit;
+}
+.container .header .left {
+  align-content: flex-start;
+  text-align: left;
+}
+.container .header .right {
+  align-content: flex-end;
+  text-align: right;
+}
+.container .body {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px 20px;
+}
+.container .body .large-row {
+  display: inherit;
+  flex-direction: column;
+  justify-content: inherit;
+  margin: 0 0 16px;
+}
+.container .body .large-row h3 {
+  margin: 0;
+  font-weight: bold;
+}
+.container .body .large-row p {
+  background-color: #ddd;
+  padding: 10px 0;
+}
+.container .body .row {
+  display: inherit;
+  flex-direction: row;
+  justify-content: inherit;
+  margin: 0 0 16px;
+}
+.container .body .row .data {
+  text-align: left;
+  display: inherit;
+  flex-direction: row;
+  white-space: nowrap;
+}
+.container .body .row .data h3 {
+  margin-right: 5px;
+  font-weight: bold;
+}
+.container .body .row .data p {
+  background-color: #ddd;
+  padding: 5px;
+  text-align: center;
+  white-space: nowrap;
+}
+

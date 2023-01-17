@@ -24,11 +24,13 @@ export class SettingsPageComponent implements OnInit {
     })
     this.loading = false;
   }
+  // @ts-ignore
   get index() {
     //@ts-ignore
     return this.form.get('index');
   }
 
+  // @ts-ignore
   get value() {
     //@ts-ignore
     return this.form.get('value');

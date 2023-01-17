@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Change Admin Password</h1>
+<div mat-dialog-content>
+
+  <div [formGroup]="form" (ngSubmit)="OnSubmit()" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Current Admin Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="current"
+        [appSearchDirective]="checkAdminPassword.bind(this)"
+      >
+      <mat-hint align="end" *ngIf="!isValid">Incorrect Password</mat-hint>
+      <mat-hint align="end" *ngIf="isValid">Correct Password</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Admin Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="newPassword"
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Retype New Admin Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="newCheck"
+        (keyup)="checkNewPasswords()"
+      >
+    </mat-form-field>
+
+
+    <button mat-raised-button type="submit" color="accent" (click)="OnSubmit()" [disabled]="form.invalid || !isValid || !passwordsMatch">Update</button>
+  </div>
+
+</div>

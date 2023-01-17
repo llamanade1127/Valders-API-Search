@@ -1,0 +1,26 @@
+.main-card {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.tickets-table-data {
+  max-width: 250px;
+}
+.button-container {
+  margin: 20px 0;
+}
+table {
+  width: 100%;
+  margin: 10px 0px;
+}
+mat-card {
+
+  min-width: 200px;
+  margin: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+}

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ApiService, Ticket } from '../api.service';
 import {tick} from "@angular/core/testing";
 import {Observable, Subscriber, Subscription} from "rxjs";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-home',
@@ -10,6 +12,8 @@ import {Observable, Subscriber, Subscription} from "rxjs";
 })
 export class HomeComponent implements OnInit {
 
+  displayedColumns: string[] = ['date', 'Student Name', 'problem', 'Device ID', 'Location','Actions', 'View'];
+  dayLoanerDisplayedColumns: string[] = ['date', 'Student Name', 'Device ID', 'Actions', 'View'];
 
   ticketCount = 0;
   dayLoanerCount = 0;
@@ -21,7 +25,24 @@ export class HomeComponent implements OnInit {
 
   tickets!: Subscription;
   dayLoaners!: Subscription;
+
+  dataTickets: Ticket[] = [];
+  dataDayLoaner: DayLoaner[] = [];
+  dataCompletedTickets: Ticket[] = [];
+
+  dataAllTickets: Ticket[] = [];
   isLoading = false;
+
+
+
+  //All
+  //@ts-ignore
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  allDataSource: MatTableDataSource<Ticket> = new MatTableDataSource<Ticket>();
+
+  //Completed
+  //@ts-ignore
+  completedDataSource: MatTableDataSource<Ticket>;
 
   //@ts-ignore
   data: Observable<HomeDataObservable>;
@@ -33,125 +54,56 @@ export class HomeComponent implements OnInit {
     // this.autoUpdate();
     this.tickets = this.oTickets.subscribe();
     this.dayLoaners = this.oActiveDayLoaners.subscribe();
+
   }
 
-  // numberOfTicketsToday() {
-  //   let temp = [...this.tickets]
-  //   let today = new Date(Date.now())
-  //   let count = 0;
-  //   for (const ticketsKey of temp) {
-  //     if("created" in ticketsKey) {
-  //       let t = new Date(`${ticketsKey.created}`);
-  //       if(today.getFullYear() == t.getFullYear() && today.getMonth() == t.getMonth() &&today.getDate() == t.getDate())
-  //         ++count;
-  //     } else {
-  //       //@ts-ignore
-  //       let t = new Date(`${ticketsKey.ticket.created}`);
-  //       if(today.getFullYear() == t.getFullYear() && today.getMonth() == t.getMonth() &&today.getDate() == t.getDate())
-  //         ++count;
-  //     }
-  //   }
-  //   return count;
-  // }
-  // sortTickets() {
-  //   this.isLoading = true;
-  //   console.log(this.tickets)
-  //   this.tickets?.sort((a,b) => {
-  //     if(a.created != null && b.created != null) {
-  //       let aDate = new Date(`${a.created}`);
-  //       let bDate = new Date(`${b.created}`);
-  //       console.log(aDate.getTime() - bDate.getTime() > 0)
-  //       return -(aDate.getTime() - bDate.getTime());
-  //     }
-  //     else
-  //       return 0;
-  //   })
-  //
-  //   if(this.tickets) {
-  //     this.activeDayLoaners = [];
-  //     for(var i = 0; i < this.tickets?.length; i++) {
-  //       if(this.tickets[i].ticketIssue == "Day Loaner") {
-  //         this.activeDayLoaners?.push({fresh: false, ticket: this.tickets[i], name: this.tickets[i].studentName});
-  //         this.tickets.splice(i,1);
-  //       }
-  //     }
-  //   }
-  //   this.isLoading = false;
-  // }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
 
-  //
-  // updateTickets(observer: Subscriber<HomeDataObservable>) {
-  //   this.api.GetAllTickets().subscribe((response) => {
-  //     let t = response.tickets;
-  //     for (let i = 0; i < t.length; i++) {
-  //       let found = false;
-  //       if(t[i].ticketIssue == "Day Loaner") {
-  //
-  //         for(let j = 0; j < this.activeDayLoaners.length; j++) {
-  //           if(this.activeDayLoaners[j].ticket == t[i]) found = true;
-  //         }
-  //
-  //         if(found) {
-  //           this.activeDayLoaners?.push({fresh: false, ticket: t[i], name: t[i].studentName});
-  //         }
-  //
-  //       } else {
-  //         for (let j = 0; j < this.tickets.length; j++) {
-  //           if(this.tickets[j] == t[i]) found = true;
-  //         }
-  //
-  //         if(found) this.tickets.push(t[i]);
-  //       }
-  //
-  //     }
-  //
-  //     this.tickets?.sort((a,b) => {
-  //       if(a.created != null && b.created != null) {
-  //         let aDate = new Date(`${a.created}`);
-  //         let bDate = new Date(`${b.created}`);
-  //         console.log(aDate.getTime() - bDate.getTime() > 0)
-  //         return -(aDate.getTime() - bDate.getTime());
-  //       }
-  //       else
-  //         return 0;
-  //     })
-  //
-  //     this.activeDayLoaners?.sort((a,b) => {
-  //       if(a.ticket.created != null && b.ticket.created != null) {
-  //         let aDate = new Date(`${a.ticket.created}`);
-  //         let bDate = new Date(`${b.ticket.created}`);
-  //         console.log(aDate.getTime() - bDate.getTime() > 0)
-  //         return -(aDate.getTime() - bDate.getTime());
-  //       }
-  //       else
-  //         return 0;
-  //     })
-  //
-  //     observer.next();
-  //   }, error => {observer.error()})
-  // }
+  }
 
+  removeDuplicateObjectFromArray(array: any[], key: string) {
+    let check = {};
+    let res = [];
+    for(let i=0; i<array.length; i++) {
+      // @ts-ignore
+      if(!check[array[i][key]]){
+        //@ts-ignore
+        check[array[i][key]] = true;
+        res.push(array[i]);
+      }
+    }
+    return res;
+  }
 
   updateTickets(sub: Subscriber<Ticket[]>) {
     setTimeout(() => {
       this.api.GetAllTickets().subscribe((response) => {
         let t = response.tickets;
-        t = t.filter((t) => {return t.ticketIssue != "Day Loaner" && t.isCurrentlyActive})
-        t?.sort((a,b) => {
+
+        this.dataAllTickets.push(...t);
+        this.dataAllTickets = this.removeDuplicateObjectFromArray(this.dataAllTickets, '_id');
+
+        let c = t.filter((t) => {return t.ticketIssue != "Day Loaner" && t.isCurrentlyActive})
+        let d  = t.filter((t) => !t.isCurrentlyActive);
+
+        const sort = (a: Ticket,b: Ticket) => {
           if (a.created != null && b.created != null) {
             let aDate = new Date(`${a.created}`);
             let bDate = new Date(`${b.created}`);
-            console.log(aDate.getTime() - bDate.getTime() > 0)
             return -(aDate.getTime() - bDate.getTime());
           } else
             return 0;
-        })
-        this.ticketCount = t.length;
+        }
+
+        c?.sort(sort);
+        d?.sort(sort);
+        this.ticketCount = c.length;
 
         let count = 0;
         let now = new Date(Date.now())
-        for(let i = 0; i < t.length; i++) {
-          let d = new Date(`${t[i].created}`)
+        for(let i = 0; i < c.length; i++) {
+          let d = new Date(`${c[i].created}`)
           if(now.getFullYear() == d.getFullYear() && now.getMonth() == d.getMonth() && now.getDate() == d.getDate())
             ++count;
         }
@@ -159,6 +111,8 @@ export class HomeComponent implements OnInit {
 
         sub.next(t);
 
+        this.dataTickets = c;
+        this.dataCompletedTickets = d;
         this.updateTickets(sub);
       })
     }, 1000)
@@ -184,8 +138,8 @@ export class HomeComponent implements OnInit {
         for(let i = 0; i < t.length; i++) {
           d.push({fresh: this.IsOld(t[i]), ticket: t[i], name: t[i].studentName});
         }
-        console.log(d);
         this.dayLoanerCount = d.length;
+        this.dataDayLoaner = d;
         sub.next(d);
 
         this.updateActiveTickets(sub);
@@ -206,6 +160,54 @@ export class HomeComponent implements OnInit {
     }
     return t;
   }
+
+  getLocation(t: Ticket) {
+
+    switch(t.status) {
+      case "Needs Repair":
+        return "Cubby " + t.cubbyNumber;
+        break;
+      case 'Vandalism':
+        return "Vandalism : Waiting for Update"
+        break;
+      case 'Needs to be Returned to Office':
+        return `${this.getGrade(t)}${this.getPrefix(this.getGrade(t))} grades return cubby`
+        break;
+      case 'Waiting for Return':
+        return 'In office'
+        break;
+      case 'Completed':
+        return "Returned"
+        break;
+      default:
+        return "Unknown"
+        break;
+    }
+  }
+
+  getGrade(t: Ticket) {
+    var d = new Date(Date.now());
+    if(d.getMonth() < 6) {
+      return d.getFullYear() - (+t.gradYear) + 12;
+    }else {
+      return  d.getFullYear() - (+t.gradYear) + 13;
+    }
+  }
+
+  getPrefix(n: number) {
+    switch (n){
+      case 1:
+        return "st"
+      case 2:
+        return "nd"
+      case 3:
+        return "rd"
+      default:
+        return "th"
+    }
+
+  }
+
 
 
   autoUpdate() {

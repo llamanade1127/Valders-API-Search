@@ -238,6 +238,18 @@
 
 
       <form [formGroup]="form" class="grid-form">
+        <mat-form-field appearance="fill" >
+          <mat-label>Status?</mat-label>
+
+          <mat-select formControlName="status" >
+            <mat-option value="Needs Repair">Needs Repair</mat-option>
+            <mat-option value="Vandalism" >Vandalism</mat-option>
+            <mat-option value="Needs to be Returned to Office" >Needs to be Returned to Office</mat-option>
+            <mat-option value="Waiting for Return" >Waiting for Return</mat-option>
+            <mat-option value="Completed" >Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+
 
         <mat-form-field appearance="fill" >
           <mat-label>Has the device been returned?</mat-label>

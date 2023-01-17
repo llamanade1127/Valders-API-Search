@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  .button-container {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    button {
+      margin: 10px 0;
+    }
+  }
+}

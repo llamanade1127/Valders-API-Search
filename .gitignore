@@ -43,3 +43,6 @@ Thumbs.db
 
 # Release Files
 /Release
+
+/out
+/output

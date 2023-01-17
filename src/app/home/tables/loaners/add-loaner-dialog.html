@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Add Loaner</h1>
+<div mat-dialog-content>
+
+  <div [formGroup]="form" (ngSubmit)="OnSubmit()" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>VASD Code or Serial Number</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="code"
+        [appSearchDirective]="checkLoaner.bind(this)"
+      >
+      <mat-hint align="end" *ngIf="!isValid">Could not find Chromebook. Press enter to search...</mat-hint>
+      <mat-hint align="end" *ngIf="isValid">{{chromebook.serialNumber}} : {{chromebook.model}}</mat-hint>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Loaner Number</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="loanerNumber"
+      >
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="accent" (click)="OnSubmit()" [disabled]="form.invalid || !isValid">Add Loaner</button>
+  </div>
+
+</div>

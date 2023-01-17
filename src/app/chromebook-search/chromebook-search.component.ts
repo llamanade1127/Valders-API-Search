@@ -51,21 +51,26 @@ export class ChromebookSearchComponent implements OnInit {
       search: ['', [Validators.required]]
     })
   }
+  // @ts-ignore
   get type() {
     //@ts-ignore
     return this.form.get('type');
   }
 
+  // @ts-ignore
   get code() {
     //@ts-ignore
     return this.form.get('code');
   }
+  // @ts-ignore
   get searchForActive() {
     return this.form.get('searchForActive');
   }
+  //@ts-ignore
   get ticketSelectOptions() {
     return this.form.get('ticketSelectOptions');
   }
+  //@ts-ignore
   get search() {
     //@ts-ignore
     return this.form.get('search');

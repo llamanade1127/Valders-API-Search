@@ -1,12 +1,23 @@
 {
   "name": "chromebook-data",
-  "author": "Matthew Storm",
   "description": "A handler for the Valders Area School District Chromebook inventorry",
-  "version": "0.0.0",
+  "version": "3.0.3",
   "main": "app.js",
+  "author": {
+    "name": "Matthew Storm",
+    "email": "llamanade1127@gmail.com"
+  },
+  "repository": "https://github.com/llamanade1127/Valders-API-Search",
+  "directories": {
+    "buildResources": "build",
+    "app": "build"
+  },
+  "license": "MIT",
+  "homepage": "./",
   "scripts": {
     "ng": "ng",
     "start": "electron-forge start",
+    "electron": "ng build --base-href ./ && electron .",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -16,30 +27,37 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^14.0.0",
+    "@angular/animations": "^15.1.0",
     "@angular/cdk": "^14.0.2",
-    "@angular/common": "^14.0.0",
-    "@angular/compiler": "^14.0.0",
-    "@angular/core": "^14.0.0",
-    "@angular/forms": "^14.0.0",
+    "@angular/common": "^15.1.0",
+    "@angular/compiler": "^15.1.0",
+    "@angular/core": "^15.1.0",
+    "@angular/forms": "^15.1.0",
     "@angular/material": "^14.0.2",
-    "@angular/platform-browser": "^14.0.0",
-    "@angular/platform-browser-dynamic": "^14.0.0",
-    "@angular/router": "^14.0.0",
+    "@angular/platform-browser": "^15.1.0",
+    "@angular/platform-browser-dynamic": "^15.1.0",
+    "@angular/router": "^15.1.0",
+    "axios": "^1.2.2",
+    "electron-packager": "^17.1.1",
     "electron-squirrel-startup": "^1.0.0",
+    "ngx-print": "^1.3.1",
+    "node-stream-zip": "^1.15.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "update-electron-app": "^2.0.1",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.0.2",
-    "@angular/cli": "~14.0.2",
-    "@angular/compiler-cli": "^14.0.0",
+    "@angular-devkit/build-angular": "^15.1.1",
+    "@angular/cli": "~15.1.1",
+    "@angular/compiler-cli": "^15.1.0",
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-dmg": "^6.0.4",
     "@electron-forge/maker-rpm": "^6.0.4",
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
+    "@electron-forge/publisher-github": "^6.0.4",
     "@types/jasmine": "~4.0.0",
     "electron": "^19.0.9",
     "jasmine-core": "~4.1.0",
@@ -48,6 +66,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~4.7.2"
+    "typescript": "~4.9.4"
   }
 }

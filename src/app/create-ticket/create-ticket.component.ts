@@ -54,6 +54,7 @@ export class CreateTicketComponent implements OnInit {
   })
 
 
+  // @ts-ignore
   get deviceIssue() {
     return this.damagedDeviceForm.get('deviceIssue')
   }
@@ -84,11 +85,11 @@ export class CreateTicketComponent implements OnInit {
     // })
 
   }
-
+  // @ts-ignore
   get ticketIssue(){
     return this.studentInfoForm.get('ticketIssue')
   }
-
+  // @ts-ignore
   get givenLoaner() {
     return this.damagedDeviceForm.get('givenLoaner')
   }
@@ -278,6 +279,7 @@ export class CreateTicketComponent implements OnInit {
     if(this.ticketIssue?.value == "Damaged Device"){
       ticket  = {
         studentID: this.Student.GInfo.id,
+        status: "Needs Repair",
         studentName: this.Student.Name,
         //@ts-ignore
         cubbyNumber: this.damagedDeviceForm.get("cubbyNumber")?.value,
@@ -318,6 +320,7 @@ export class CreateTicketComponent implements OnInit {
         studentID: this.Student.GInfo.id,
         studentName: this.Student.Name,
         cubbyNumber: "NA",
+        status: "Waiting for Return",
         //@ts-ignore
         gradYear: this.gradYear,
         //@ts-ignore

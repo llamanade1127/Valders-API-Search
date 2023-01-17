@@ -1,0 +1,21 @@
+
+<div *ngIf="config">
+  <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Loaner Path</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="config.loanerPath"
+        formControlName="loanerPath"
+      >
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" (click)="validatePasswordChange()">Change Admin Password</button>
+      <button mat-raised-button type="submit" color="accent" (click)="OnSubmit()">Save Config</button>
+    </div>
+
+  </form>
+
+</div>

@@ -3,62 +3,161 @@
 
 <div class="container">
 
-  <div *ngIf="!isLoading" class="Active-Tickets" >
-    <mat-card>
-      <mat-card-content>
-        <h2>Active Tickets</h2>
-        <table class="table">
-          <tr *ngFor="let ticket of oTickets | async">
-            <th>
-              <p class="tickets-table-title">{{ticket.studentName}} : {{ticket.deviceIssue}}<br/>Created by {{ticket.owner}} at {{TicketDateString(ticket)}}</p>
-            </th>
-            <td class="tickets-table-data">
-              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/active/{{ticket._id}}">
-                <button mat-raised-button color="accent">Go To Ticket</button>
-              </a>
-            </td>
-          </tr>
-        </table>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <mat-tab-group>
+    <mat-tab label="Active">
+      <div *ngIf="!isLoading && (oTickets | async)?.length != 0" class="Active-Tickets" >
+        <mat-card color="accent">
+          <mat-card-content>
+            <h2>Active Tickets</h2>
+            <table mat-table [dataSource]="dataTickets" matSort matSortActive="created" matSortDisableClear matSortDirection="desc" class="mat-elevation-z8">
 
-  <div class="Day-Loaners">
-    <mat-card>
-      <mat-card-content>
-        <h2>Active Day Loaners</h2>
-        <div *ngIf="!isLoading">
-          <table class="table">
-            <tr *ngFor="let dayLoaner of oActiveDayLoaners | async" [style.background-color]="IsOld(dayLoaner.ticket) ? 'red' : 'none'" >
-              <th>
-                <p class="tickets-table-title">Loaner For {{dayLoaner.ticket.studentName}}<br/>{{TicketDateString(dayLoaner.ticket)}}</p>
-              </th>
-              <td class="tickets-table-data">
-                <a routerLink="/chromebook/{{dayLoaner.ticket.damagedDeviceID}}/tickets/active/{{dayLoaner.ticket._id}}">
-                  <button mat-raised-button color="accent">Go To Ticket</button>
-                </a>
-              </td>
-            </tr>
-          </table>
 
-        </div>
-      </mat-card-content>
-    </mat-card>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Date </th>
+                <td mat-cell *matCellDef="let ticket"> {{TicketDateString(ticket)}} </td>
+              </ng-container>
 
-  </div>
 
-  <div class="Statistics">
-    <mat-card>
-      <mat-card-title>
-        Statistics
-      </mat-card-title>
-      <mat-card-content>
-        <h2>Current Tickets: {{ticketCount}}</h2>
-        <h2>Tickets Made Today: {{numberToday}}</h2>
-        <h2>Day Loaners: {{dayLoanerCount}}</h2>
-      </mat-card-content>
-    </mat-card>
 
-  </div>
+              <ng-container matColumnDef="Student Name">
+                <th mat-header-cell *matHeaderCellDef> Student Name </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.studentName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="problem">
+                <th mat-header-cell *matHeaderCellDef> Device Issue </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.deviceIssue}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Device ID">
+                <th mat-header-cell *matHeaderCellDef> Device ID </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.damagedDeviceID}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Location">
+                <th mat-header-cell *matHeaderCellDef> Location </th>
+                <td mat-cell *matCellDef="let ticket"> {{getLocation(ticket)}} </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.status}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="View">
+                <th mat-header-cell *matHeaderCellDef> View </th>
+                <td mat-cell *matCellDef="let ticket"><button color="accent" mat-raised-button routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/active/{{ticket._id}}">View</button> </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="Day-Loaners">
+        <mat-card>
+          <mat-card-content>
+            <h2>Active Day Loaners</h2>
+            <table mat-table [dataSource]="dataDayLoaner" matSort matSortActive="created" matSortDisableClear matSortDirection="desc" class="mat-elevation-z8">
+
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> Date </th>
+                <td mat-cell *matCellDef="let ticket"> {{TicketDateString(ticket.ticket)}} </td>
+              </ng-container>
+
+
+
+              <ng-container matColumnDef="Student Name">
+                <th mat-header-cell *matHeaderCellDef> Student Name </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.ticket.studentName}} </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="Device ID">
+                <th mat-header-cell *matHeaderCellDef> Device ID </th>
+                <td mat-cell *matCellDef="let ticket"> {{ticket.ticket.damagedDeviceID}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let ticket" [style]="IsOld(ticket.ticket) ? 'red' : 'clear'"> {{IsOld(ticket.ticket) ? "MISSING" : "On Time"}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="View">
+                <th mat-header-cell *matHeaderCellDef> View </th>
+                <td mat-cell *matCellDef="let ticket"><button color="accent" mat-raised-button routerLink="/chromebook/{{ticket.ticket.damagedDeviceID}}/tickets/active/{{ticket.ticket._id}}">View</button> </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="dayLoanerDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: dayLoanerDisplayedColumns;"></tr>
+
+
+            </table>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+
+      <div class="Statistics">
+        <mat-card>
+          <mat-card-title>
+            Statistics
+          </mat-card-title>
+          <mat-card-content>
+            <h2>Current Tickets: {{ticketCount}}</h2>
+            <h2>Tickets Made Today: {{numberToday}}</h2>
+            <h2>Day Loaners: {{dayLoanerCount}}</h2>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+
+    </mat-tab>
+    <mat-tab label="Completed">
+      <div>
+        <mat-card>
+         <app-completed-tickets></app-completed-tickets>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="All Tickets">
+      <mat-card color="accent">
+        <mat-card-content>
+          <app-all-loaners></app-all-loaners>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Loaners">
+      <mat-card>
+        <app-loaners></app-loaners>
+      </mat-card>
+
+    </mat-tab>
+
+    <mat-tab label="Settings">
+      <mat-card>
+        <mat-card-title>
+          Config Settings
+        </mat-card-title>
+        <mat-card-content>
+          <app-config-settings></app-config-settings>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-tab>
+  </mat-tab-group>
+
+
 
 </div>

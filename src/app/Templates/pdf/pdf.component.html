@@ -1,0 +1,128 @@
+<div mat-dialog-content id="test">
+  <div class="container" id="container">
+    <div class="header">
+      <div class="left">
+        <h2>Valders Area School District</h2>
+        <h3>Device Ticket #: {{data.ticket._id}} Cubby #: {{data.ticket.cubbyNumber}}</h3>
+        <h3>Created by: {{data.ticket.owner}}</h3>
+      </div>
+
+      <div class="right">
+        <h2>Ticket Created</h2>
+        <p>{{GetDate(data.ticket)}}</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="body">
+      <h2>Student Info</h2>
+      <mat-divider></mat-divider>
+      <div class="row">
+        <div class="data">
+          <h3>Name: </h3>
+          <p>{{data.ticket.studentName}}</p>
+        </div>
+
+        <div class="data">
+          <h3>Graduation</h3>
+          <p>{{data.ticket.gradYear}}</p>
+        </div>
+
+        <div class="data">
+          <h3>Issue</h3>
+          <p>{{data.ticket.ticketIssue}}</p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <h2>Damaged Device Info</h2>
+      <mat-divider></mat-divider>
+
+      <div class="row">
+        <div class="data">
+          <h3>Serial Number</h3>
+          <p>{{data.ticket.damagedDeviceID}}</p>
+        </div>
+
+        <div class="data">
+          <h3>VASD Code</h3>
+          <p>{{data.damagedDevice.annotatedAssetId}}</p>
+        </div>
+
+        <div class="data">
+          <h3>Model</h3>
+          <p>{{data.damagedDevice.model}}</p>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="data">
+          <h3>Preventable</h3>
+          <p>{{data.ticket.beenAvoided ? "Yes" : "No"}}</p>
+        </div>
+      </div>
+      <div class="large-row">
+        <h3>Device Issue</h3>
+        <p>{{data.ticket.deviceIssue}}</p>
+      </div>
+
+      <div class="large-row">
+        <h3>Cause</h3>
+        <p>{{data.ticket.cause}}</p>
+      </div>
+
+
+      <div class="large-row">
+        <h3>What the student could have done differently</h3>
+        <p>{{data.ticket.doneDifferently}}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <h2>Loaner Device Info</h2>
+      <mat-divider></mat-divider>
+      <div class="row">
+        <div class="data">
+          <h3>
+            Loaner #
+          </h3>
+          <p>
+            {{data.ticket.issuedLoanerNumber}}
+          </p>
+        </div>
+
+        <div class="data">
+          <h3>
+            Loaner I.D.
+          </h3>
+          <p>
+            {{data.ticket.issuedLoanerID}}
+          </p>
+        </div>
+
+        <div class="data" *ngIf="data.loanerChromebook">
+          <h3>
+            Model
+          </h3>
+          <p>
+            {{data.loanerChromebook.model}}
+          </p>
+        </div>
+
+        <div class="data">
+          <h3>
+            Date
+          </h3>
+          <p>
+            {{GetDate(data.ticket)}}
+          </p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="large-row">
+        <h3>Notes</h3>
+        <p>{{data.ticket.notes}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button  printSectionId="test" [useExistingCss]="true" ngxPrint>Print</button>
+</div>
+

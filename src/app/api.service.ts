@@ -90,16 +90,16 @@ export class ApiService {
       'authorization': '123456'
     }
 
-    return this.http.get<any>('http://localhost:3000/server/config', {headers})
+    return this.http.get<ConfigRequest>('http://localhost:3000/auth/config', {headers})
   }
 
-  UpdateConfig(data: any) {
+  UpdateConfig(data: Config) {
     let headers = {
       //TODO: Needs to be given by server for release build
       'authorization': '123456'
     }
 
-    return this.http.post<any>('http://localhost:3000/server/dasdfadsfsa', {data}, {headers})
+    return this.http.patch<any>('http://localhost:3000/auth/config', data, {headers})
   }
   RemoveUserFromStudentAndSave(student: Student) {
     let headers = {
@@ -243,10 +243,66 @@ export class ApiService {
   GetAllTickets() {
     return this.QueryTicket("{}");
   }
+
+  QueryLoaners(query: string) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.get<LoanerQuery>(`http://localhost:3000/chromebooks/loaners/query?q=${JSON.stringify(query)}`, {headers: headers} )
+
+  }
+
+  PostLoaner(loaner: Loaner) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.post<LoanerQuery>(`http://localhost:3000/chromebooks/loaners/post`, loaner, {headers: headers} )
+
+  }
+
+  DeleteLoaner(loaner: Loaner) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.delete(`http://localhost:3000/chromebooks/loaners/delete?q=${loaner._id}`, {headers: headers} )
+
+  }
+
+
+
+
 }
+
+export interface ConfigRequest {
+  date: string,
+  config: Config
+}
+export interface Config {
+  adminPassword: string,
+  loanerPath: string
+}
+export interface LoanerQuery {
+  time: string,
+  query: Loaner[]
+}
+
+export interface Loaner {
+  _id?: string;
+  serialNumber: string,
+  vasdCode: string,
+  model: string,
+  loanerNumber: string,
+  assignedTicket: string,
+  pastTickets: string[],
+}
+
 
 export interface Ticket {
 	studentID: string;
+  status: string;
   studentName: string;
 	gradYear: string;
   cubbyNumber: string;
