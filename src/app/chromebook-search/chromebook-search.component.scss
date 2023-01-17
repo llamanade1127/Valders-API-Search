@@ -44,3 +44,20 @@ input {
   div.mat-form-field-wrapper{
     padding-bottom: 1.15em;
   }
+
+
+
+table, th, td {
+  border: 2px groove #b1b1b1;
+  border-radius: 2px;
+  padding: 5px
+
+}
+.tickets-table-data {
+  max-width: 250px;
+
+}
+
+mat-slide-toggle {
+  margin-bottom: 10px;
+}

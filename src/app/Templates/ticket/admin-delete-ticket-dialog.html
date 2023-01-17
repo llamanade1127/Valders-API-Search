@@ -1,7 +1,14 @@
 <h1 mat-dialog-title>WARNING!</h1>
 <div mat-dialog-content>
-  <p>You are about to do a action that is irreversible! Please enter the admin password to continue</p>
+  <p>
+    You are about to do a action that is irreversible!
+    Tickets should not be deleted and should instead be set to complete after they are finished.
+    Only delete a ticket if there is a duplicate of the ticket, or it was a test ticket.
+
+    Click cancel if this action was a mistake.
+  </p>
   <mat-form-field appearance="fill">
+    <mat-label>Admin Password</mat-label>
     <input matInput type="password" placeholder="password" [(ngModel)]="password">
   </mat-form-field>
 </div>

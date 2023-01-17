@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApiService, Chromebook, Student, User} from "../api.service";
+import {ApiService, Chromebook, Student, Ticket, User} from "../api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SnackBarService} from "../snack-bar.service";
@@ -15,6 +15,8 @@ export class StudentDataComponent implements OnInit {
   newStudentID = ""
   studentSearchType = ""
 
+  ActiveTickets: Ticket[] = [];
+  CompletedTickets: Ticket[] = [];
   //@ts-ignore
   form: FormGroup;
   studentID: string = "";
@@ -41,6 +43,22 @@ export class StudentDataComponent implements OnInit {
            this.chromebook = student.student.Chromebook;
            console.log(this.student.ReturnData)
 
+           if(student.student.Tickets.length > 0){
+             this.api.QueryTicket({studentID: student.student.GInfo.id}).subscribe({
+               next: data => {
+                 this.CompletedTickets = data.tickets.filter((ticket) => {
+                   return !ticket.isCurrentlyActive
+                 })
+
+                 this.ActiveTickets = data.tickets.filter((ticket) => {
+                   return ticket.isCurrentlyActive
+                 })
+
+                 console.log(this.CompletedTickets)
+                 console.log(this.ActiveTickets)
+               }
+             })
+           }
 
            this.foundStudent = true;
            this.loading = false;

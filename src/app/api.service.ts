@@ -301,6 +301,7 @@ export interface Loaner {
 
 
 export interface Ticket {
+  _id?: string;
 	studentID: string;
   status: string;
   studentName: string;
@@ -324,6 +325,7 @@ export interface Ticket {
 	dateReturned?: string;
 	owner: string;
 	isCurrentlyActive: boolean;
+  created?: number;
 }
 
 export interface ReturnStudent{
@@ -669,7 +671,7 @@ export interface Student {
   Name: string;
   PrimaryEmail: string;
   ReturnData: ReturnData
-  Tickets: any[];
+  Tickets: string[];
   CompletedTickets: string[];
 }
 

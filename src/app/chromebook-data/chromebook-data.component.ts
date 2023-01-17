@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ApiService, Chromebook, Student} from "../api.service";
+import {ApiService, Chromebook, Student, Ticket} from "../api.service";
 import {ActivatedRoute} from "@angular/router";
+import {SnackBarService} from "../snack-bar.service";
 
 @Component({
   selector: 'app-chromebook-data',
@@ -8,7 +9,9 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./chromebook-data.component.scss']
 })
 export class ChromebookDataComponent implements OnInit {
+  isLoaner = false;
 
+  assignedTickets: Ticket[] = [];
   loading = true;
   //@ts-ignore
   @Input() chromebook: Chromebook;
@@ -19,7 +22,7 @@ export class ChromebookDataComponent implements OnInit {
 
   //@ts-ignore
   recentUserStudent: Student;
-  constructor(private routes: ActivatedRoute, private api: ApiService) { }
+  constructor(private routes: ActivatedRoute, private api: ApiService, private snack: SnackBarService) { }
 
   ngOnInit(): void {
     this.routes.params.subscribe((params) => {
@@ -27,6 +30,24 @@ export class ChromebookDataComponent implements OnInit {
       this.api.QueryChromebook("SERIAL", sn).subscribe({
         next: chromebook => {
           this.chromebook = chromebook.chromebook;
+          console.log(this.chromebook.annotatedAssetId)
+          if(this.chromebook.annotatedAssetId.includes('L'))
+          {
+            console.log('Is loaner')
+            this.isLoaner = true;
+            //Get all tickets assigned to loaner
+            this.api.QueryTicket(`{"issuedLoanerID": "${this.chromebook.annotatedAssetId}", "isCurrentlyActive": true}`).subscribe({
+              next: Tickets => {
+                this.assignedTickets = Tickets.tickets;
+              }
+            })
+          } else {
+            this.api.QueryTicket(`{"damagedDeviceID": "${this.chromebook.serialNumber}",  "isCurrentlyActive": true}`).subscribe({
+              next: Tickets => {
+                this.assignedTickets = Tickets.tickets;
+              }
+            })
+          }
           this.api.QueryStudent(this.chromebook.serialNumber).subscribe({
             next: student => {
               console.log(student)
@@ -64,5 +85,25 @@ export class ChromebookDataComponent implements OnInit {
 
   }
 
+
+  setTicketToComplete(ticket: Ticket) {
+    this.loading = true;
+    ticket.isCurrentlyActive = false;
+    ticket.chargerInGoodCond = true;
+    ticket.loanerInGoodCond = true;
+    ticket.isDeviceReturned = true;
+    ticket.dateReturned = new Date().toDateString();
+
+    this.api.UpdateTicket(ticket).subscribe({
+      next: Ticket => {
+        this.loading = false;
+        this.snack.error("Updated ticket")
+      }, error: err => {
+        this.loading = false;
+        this.snack.error("Error setting ticket to complete")
+
+      }
+    })
+  }
 
 }
