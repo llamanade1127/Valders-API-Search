@@ -10,7 +10,7 @@ let mainWindow
 
 let githubUsername = 'llamanade1127';
 let githubRepo = 'Valders-API';
-let token = "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";
+let token = "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";
 async function UpdateAPI(res) {
   let fileResponse = await axios({
     url: res['assets'][0].url,
@@ -52,6 +52,7 @@ async function UpdateAPI(res) {
 
 
 async function CheckAPI() {
+
   let headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
     //@ts-ignore
@@ -65,8 +66,12 @@ async function CheckAPI() {
   }
 
 
+  try {
+    var res = await axios.get(`https://api.github.com/repos/${githubUsername}/${githubRepo}/releases/latest`, {headers: headers});
+  } catch(e) {
+    console.log(e)
+  }
 
-  let res = await axios.get(`https://api.github.com/repos/${githubUsername}/${githubRepo}/releases/latest`, {headers: headers});
 
 
 
@@ -136,6 +141,12 @@ async function createWindow () {
     //api.kill()
     mainWindow = null
   })
+
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    require('electron').shell.openExternal(url);
+    return { action: 'deny' };
+  });
 }
 
 app.on('ready', () => {

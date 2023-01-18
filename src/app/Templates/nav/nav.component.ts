@@ -12,4 +12,9 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  open(url: string) {
+    window.open(url, "_blank");
+  }
+
+
 }
