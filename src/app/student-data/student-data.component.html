@@ -1,7 +1,7 @@
 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <div class="container" *ngIf="student">
 <h1>{{student.Name}}</h1>
-  <mat-tab-group dynamicHeight mat-stretch-tabs="true">
+  <mat-tab-group dynamicHeight mat-stretch-tabs="true"  color="accent" backgroundColor="primary">
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">face</mat-icon>
@@ -20,14 +20,17 @@
     </mat-tab>
 
 
-    <mat-tab>
+    <mat-tab *ngIf="foundTickets">
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">article</mat-icon>
         Tickets
       </ng-template>
-      <app-ticket-table [tickets]="ActiveTickets"></app-ticket-table>
-      <mat-divider></mat-divider>
-      <app-ticket-table [tickets]="CompletedTickets"></app-ticket-table>
+      <mat-card class="mat-elevation-z8">
+        <app-ticket-table [tickets]="ActiveTickets"></app-ticket-table>
+        <mat-divider></mat-divider>
+        <app-ticket-table [tickets]="CompletedTickets"></app-ticket-table>
+      </mat-card>
+
     </mat-tab>
 
 

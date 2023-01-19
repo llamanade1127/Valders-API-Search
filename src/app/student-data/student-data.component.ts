@@ -28,6 +28,8 @@ export class StudentDataComponent implements OnInit {
   chromebook: Chromebook;
   //@ts-ignore
   user: User;
+
+  foundTickets = false;
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private api: ApiService, private snack: SnackBarService, private router: Router) { }
 
   ngOnInit(): void {
@@ -53,9 +55,7 @@ export class StudentDataComponent implements OnInit {
                  this.ActiveTickets = data.tickets.filter((ticket) => {
                    return ticket.isCurrentlyActive
                  })
-
-                 console.log(this.CompletedTickets)
-                 console.log(this.ActiveTickets)
+                 this.foundTickets = true;
                }
              })
            }

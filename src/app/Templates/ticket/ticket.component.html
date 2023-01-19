@@ -1,156 +1,117 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
 <mat-card>
   <mat-card-title>
   </mat-card-title>
   <mat-card-content>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <!--
-    <div class="parent"  *ngIf="Student !== null && Chromebook !== null">
-      <div class="div1">
-        <h3>Name: </h3>
-        {{Student.Name}}
-        <button mat-stroked-button routerLink="../../../../../student/{{Student.GInfo.id}}">Go to student</button>
-      </div>
-      <div class="div2"><h3>Graduation Year: </h3 >{{Ticket.gradYear}}</div>
-      <div class="div3"><h3>Ticket Issue: </h3>{{Ticket.ticketIssue}} </div>
-      <div class="div4">
-        <h3>Damaged Device ID</h3 >
-        {{Ticket.damagedDeviceID}}:{{Chromebook.annotatedAssetId}}
-        <button mat-stroked-button routerLink="../../../../{{Chromebook.serialNumber}}">Go to chromebook</button>
-      </div>
-      <div class="div5"><h3>Ticket Issue: </h3>{{Ticket.deviceIssue}} </div>
-      <div class="div6"><h3>Cause: </h3 >{{Ticket.cause}} </div>
-      <div class="div7"><h3>Could it have been avoided: </h3>{{Ticket.beenAvoided == true ? "Yes" : "No"}}</div>
-      <div class="div8"><h3>What could the student have done differently</h3>{{Ticket.doneDifferently}} </div>
-      <div class="div9"><h3>Issued Loaner ID</h3>{{Ticket.issuedLoanerID}}</div>
-      <div class="div10"><h3 >Was a charger issued?</h3 >{{Ticket.chargerIssued == true ? "Yes" : "No"}} </div>
+    <div *ngIf="Ticket" class="container">
+      <div class="header">
+        <div class="left">
+          <h3>Ticket #: {{Ticket._id}}</h3>
+          <p>Created by {{Ticket.owner}}</p>
+        </div>
 
-      <div class="div11">
-          <mat-checkbox class="" ngDefaultControl [(ngModel)]="Ticket.isDeviceReturned" >Device Returned</mat-checkbox>
-      </div>
-      <div class="div12">
-          <mat-checkbox class="" ngDefaultControl [(ngModel)]="Ticket.loanerInGoodCond" >Loaner is in good condition</mat-checkbox>
-      </div>
-      <div class="div13">
-          <mat-checkbox class=""  ngDefaultControl [(ngModel)]="Ticket.chargerInGoodCond" >Charger in good condition</mat-checkbox>
+        <div class="right">
+          <h3>Status:</h3>
+          <p>{{Ticket.isCurrentlyActive ? "Active" : "Completed"}}</p>
+        </div>
 
       </div>
 
+      <div class="table-container">
+        <h2>Student Info</h2>
+        <mat-divider></mat-divider>
+        <div class="row">
+          <div class="data">
+            <h3>Name</h3>
+            <p>{{Ticket.studentName}}</p>
+          </div>
 
-      <div class="div14">
+          <div class="data">
+            <h3>Graduation</h3>
+            <p>{{Ticket.gradYear}}</p>
+          </div>
 
-        <textarea
-          matInput
-          ngDefaultControl
-          [(ngModel)]="Ticket.notes"
-          type="text"
-          autocomplete="off"
-        > </textarea>
+          <div class="data">
+            <h3>Issue</h3>
+            <p>{{Ticket.ticketIssue}}</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <h2>Damaged Device Info</h2>
+        <div class="row">
+          <div class="data">
+            <h3>I.T. Barcode</h3>
+            <p>{{Chromebook.annotatedAssetId}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Serial #</h3>
+            <p>{{Chromebook.serialNumber}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Is Preventable</h3>
+            <p>{{Ticket.beenAvoided ? "Yes" : "No"}}</p>
+          </div>
+
+          <div class="data" *ngIf="Ticket.beenAvoided">
+            <h3>What could they have done differently</h3>
+            <p>{{Ticket.doneDifferently}}</p>
+          </div>
+        </div>
+
+        <div class="large-row">
+          <h3>
+            Device Issue
+          </h3>
+          <p>{{Ticket.deviceIssue}}</p>
+        </div>
+
+        <div class="large-row">
+          <h3>
+            Cause
+          </h3>
+          <p>{{Ticket.cause}}</p>
+        </div>
+        <mat-divider></mat-divider>
+        <h2 *ngIf="Ticket.issuedLoaner">Loaner Device Info</h2>
+        <mat-divider></mat-divider>
+        <div class="row">
+          <div class="data">
+            <h3>Loaner #</h3>
+            <p>{{Ticket.issuedLoanerNumber}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Loaner Barcode</h3>
+            <p>{{loanerChromebook.annotatedAssetId}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Loaner Serial #</h3>
+            <p>{{loanerChromebook.serialNumber}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Date issued</h3>
+            <p>{{TicketDateString(Ticket)}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Model</h3>
+            <p>{{loanerChromebook.model}}</p>
+          </div>
+        </div>
+
 
       </div>
-      <div class="div15">
-        <button mat-raised-button color="primary" (click)="updateTicket()">Update Ticket</button>
-        <button mat-raised-button color="accent" (click)="setTicketToComplete()">Set ticket to complete</button>
-        <button mat-raised-button color="warn" (click)="deleteTicket()">Delete Ticket</button>
-      </div>
+
+
     </div>
-  -->
 
-    <!-- Table Content Test-->
-    <div *ngIf="Ticket">
-      <h2>Ticket {{Ticket._id}}. Created by {{Ticket.owner}}. <br/>Status: {{Ticket.isCurrentlyActive ? 'Active ' + Ticket.created : 'Completed ' + Ticket.dateReturned}}</h2>
-
-      <div class="table-parent-grid">
-        <table class="chromebook-info-table table" >
-          <caption>Students Chromebook Info</caption>
-          <tbody>
-          <tr class="row">
-            <th class="table-header">Device Serial Number</th>
-            <td class="data-right"><a routerLink="../../../../{{Ticket.damagedDeviceID}}">{{Ticket.damagedDeviceID}}</a></td>
-          </tr>
-          <tr class="row" *ngIf="Ticket.cubbyNumber">
-            <th class="table-header">Device Cubby</th>
-            <td class="data-right">{{Ticket.cubbyNumber}}</td>
-          </tr>
-          <tr class="row">
-            <th class="table-header">Device VASD Code</th>
-            <td class="data-right">{{Chromebook.annotatedAssetId}}</td>
-          </tr>
-          <tr class="row">
-            <th class="data-left">Ticket Issue</th>
-            <td class="data-right">{{Ticket.ticketIssue}}</td>
-          </tr>
-
-          <tr class="row">
-            <th class="data-left">Student ID</th>
-            <td class="data-right"><a routerLink="../../../../../student/{{Ticket.studentID}}">{{Ticket.studentID}}</a></td>
-          </tr>
-          <tr class="row">
-            <th class="data-left">Student Name</th>
-            <td class="data-right">{{Student.Name}}</td>
-          </tr>
-
-          <tr class="row">
-            <th class="data-left">Graduation Year</th>
-            <td class="data-right">{{Ticket.gradYear}}</td>
-
-          </tr>
-          <tr class="row">
-            <th class="data-left">Student Assigned Chromebook</th>
-            <td class="data-right">{{Student.Chromebook.serialNumber}}</td>
-          </tr>
-        </table>
-
-
-        <table class="damaged-device-info-table table">
-          <caption>Damaged Device Info</caption>
-          <tbody>
-          <tr class="row">
-            <th class="data-left">Device Issue</th>
-            <td class="data-right">{{Ticket.deviceIssue}}</td>
-          </tr>
-          <tr class="row">
-            <th class="data-left">Cause</th>
-            <td class="data-right">{{Ticket.cause}}</td>
-          </tr>
-
-          <tr class="row">
-            <th class="data-left">Could it have been avoided?</th>
-            <td class="data-right">{{Ticket.beenAvoided ? "Yes" : "No"}}</td>
-
-          </tr>
-
-          <tr class="row">
-            <th class="data-left">What could have been done differently</th>
-            <td class="data-right">{{Ticket.doneDifferently}}</td>
-          </tr>
-
-          <tr class="row">
-            <th class="data-left">Was given loaner?</th>
-            <td class="data-right">{{Ticket.issuedLoaner ? "Yes" : "No"}}</td>
-          </tr>
-          <tr class="row" *ngIf="Ticket.issuedLoaner">
-            <th class="data-left">Loaner ID</th>
-            <td class="data-right">{{Ticket.issuedLoanerID}}</td>
-
-          </tr>
-
-          <tr class="row" *ngIf="Ticket.issuedLoaner">
-            <th class="data-left">Loaner Number</th>
-            <td class="data-right">{{Ticket.issuedLoanerNumber}}</td>
-          </tr>
-
-          <tr class="row" *ngIf="Ticket.issuedLoaner" >
-            <th class="data-left">Was given Charger?</th>
-            <td class="data-right">{{Ticket.chargerIssued ? "Yes" : "No"}}</td>
-          </tr>
-          </tbody>
-
-        </table>
-        <div ></div>
-      </div>
-
-
-      <form [formGroup]="form" class="grid-form">
+    <form [formGroup]="form" class="grid-form">
+      <div class="row">
         <mat-form-field appearance="fill" >
           <mat-label>Status?</mat-label>
 
@@ -188,6 +149,8 @@
             <mat-option value=false >No</mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
+      <div class="full-row">
         <mat-form-field appearance="fill" class="notes">
           <mat-label>Notes</mat-label>
           <textarea
@@ -199,22 +162,21 @@
             autocomplete="off"></textarea>
         </mat-form-field>
 
-      </form>
-
-      <div class="div15">
-        <button mat-raised-button color="primary" (click)="updateTicket()">Update Ticket</button>
-        <button mat-raised-button color="accent" (click)="setTicketToComplete()">Set ticket to {{Ticket.isCurrentlyActive ? "Complete" : "Active"}}</button>
-        <button mat-raised-button color="warn" (click)="deleteTicket()">Delete Ticket</button>
-        <button mat-raised-button color="warn" routerLink="../../../../../">Return to search</button>
-        <button mat-icon-button color="primary" class="right" (click)="printTicket()">
-          <mat-icon>print</mat-icon>
-        </button>
       </div>
+
+    </form>
+
+    <div class="div15">
+      <button mat-raised-button color="primary" (click)="updateTicket()">Update Ticket</button>
+      <button mat-raised-button color="accent" (click)="setTicketToComplete()">Set ticket to {{Ticket.isCurrentlyActive ? "Complete" : "Active"}}</button>
+      <button mat-raised-button color="warn" (click)="deleteTicket()">Delete Ticket</button>
+      <button mat-raised-button color="warn" routerLink="../../../../../">Return to search</button>
+      <button mat-icon-button color="primary" class="right" (click)="printTicket()">
+        <mat-icon>print</mat-icon>
+      </button>
     </div>
 
 
-    <div *ngIf="Ticket" class="container">
 
-    </div>
   </mat-card-content>
 </mat-card>

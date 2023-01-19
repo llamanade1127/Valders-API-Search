@@ -22,6 +22,12 @@ export class TicketComponent implements OnInit {
     status: ['', []]
   })
 
+
+  TicketDateString(t: Ticket): string {
+    var d = new Date(`${t.created}`);
+    //return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()} | ${d.getHours()}:${d.getMinutes()}`
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  }
   //@ts-ignore
   Ticket: Ticket;
 

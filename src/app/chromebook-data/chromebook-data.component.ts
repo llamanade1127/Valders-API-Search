@@ -10,7 +10,7 @@ import {SnackBarService} from "../snack-bar.service";
 })
 export class ChromebookDataComponent implements OnInit {
   isLoaner = false;
-
+  findingTickets = true;
   assignedTickets: Ticket[] = [];
   loading = true;
   //@ts-ignore
@@ -30,24 +30,30 @@ export class ChromebookDataComponent implements OnInit {
       this.api.QueryChromebook("SERIAL", sn).subscribe({
         next: chromebook => {
           this.chromebook = chromebook.chromebook;
-          console.log(this.chromebook.annotatedAssetId)
+
           if(this.chromebook.annotatedAssetId.includes('L'))
           {
-            console.log('Is loaner')
             this.isLoaner = true;
             //Get all tickets assigned to loaner
             this.api.QueryTicket(`{"issuedLoanerID": "${this.chromebook.annotatedAssetId}", "isCurrentlyActive": true}`).subscribe({
               next: Tickets => {
                 this.assignedTickets = Tickets.tickets;
+                this.findingTickets = false;
               }
             })
           } else {
-            this.api.QueryTicket(`{"damagedDeviceID": "${this.chromebook.serialNumber}",  "isCurrentlyActive": true}`).subscribe({
+            this.api.QueryTicket(`{"damagedDeviceID": "${this.chromebook.serialNumber}"}`).subscribe({
               next: Tickets => {
                 this.assignedTickets = Tickets.tickets;
+
+                this.api.QueryTicket({damagedDeviceID: this.chromebook.annotatedAssetId}).subscribe((aTickets) => {
+                  this.assignedTickets.push(...aTickets.tickets)
+                  this.findingTickets = false;
+                })
               }
             })
           }
+
           this.api.QueryStudent(this.chromebook.serialNumber).subscribe({
             next: student => {
               console.log(student)
@@ -104,6 +110,27 @@ export class ChromebookDataComponent implements OnInit {
 
       }
     })
+  }
+
+  round(number: number) {
+    return Math.round(number)
+  }
+
+
+  convertBytes(bytes: number) {
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
+
+    if (bytes == 0) {
+      return "n/a"
+    }
+
+    const i = parseInt(String(Math.floor(Math.log(bytes) / Math.log(1024))))
+
+    if (i == 0) {
+      return bytes + " " + sizes[i]
+    }
+
+    return (bytes / Math.pow(1024, i)).toFixed(1) + " " + sizes[i]
   }
 
 }

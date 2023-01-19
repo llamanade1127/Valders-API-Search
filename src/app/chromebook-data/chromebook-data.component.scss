@@ -1,26 +1,71 @@
-.flex {
-  margin: 10px;
+
+$data-color: #eaeaea;
+.container {
   display: flex;
-  flex-wrap: wrap;
-}
+  align-content: center;
+  justify-content: space-between;
+  margin: 20px;
 
-table, th, td {
-  border: 2px groove #b1b1b1;
-  border-radius: 2px;
-  padding: 5px
+  .header {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    .left {
+      align-content: flex-start;
+    }
+    .right {
+      align-content: flex-end;
+    }
+    img {
+      border-radius: 50%;
+      max-block-size: 50px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      margin: 0 5px;
+    }
+    p {
+      font-size: large;
+    }
+  }
 
-}
-mat-card {
-  margin: 100px auto auto;
-  max-width: fit-content;
-}
-mat-card-content {
-  display: flex;
-  flex-direction: column;
-}
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
 
-button {
-  margin: 10px;
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-content: space-between;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin: 0 10px;
+      padding: 10px;
+
+      .data {
+        margin: 0 10px;
+        text-align: left;
+        display: inherit;
+        flex-direction: row;
+        white-space: nowrap;
+        h3 {
+          margin-right: 5px;
+          font-weight: bold;
+        }
+        p {
+          border: 1px groove $data-color;
+          width: 100%;
+          text-align: left;
+          background-color: $data-color;
+          padding: 5px;
+          white-space: nowrap;
+        }
+      }
+
+
+    }
+
+
+  }
 }
-
-
