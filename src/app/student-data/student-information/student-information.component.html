@@ -1,0 +1,59 @@
+<div class="container">
+  <mat-card class="mat-elevation-z8">
+    <mat-card-title>
+      Student Information
+    </mat-card-title>
+
+    <mat-card-content>
+      <div class="header">
+        <h2 class="left">{{student.Name}}</h2>
+
+        <img *ngIf="photo" src="data:{{photo.mimeType}};base64,{{photo.photoData}}" alt="" class="right">
+      </div>
+      <mat-divider></mat-divider>
+      <div class="table-container">
+        <div class="row">
+          <div class="data">
+            <h3>Email</h3>
+            <p>{{student.PrimaryEmail}}</p>
+          </div>
+
+          <div class="data">
+            <h3>OU</h3>
+            <p>{{student.GInfo.orgUnitPath}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Kind</h3>
+            <p>{{student.GInfo.kind}}</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row">
+        <div class="data">
+          <h3>Recovery Phone</h3>
+          <p>{{student.GInfo.recoveryPhone}}</p>
+        </div>
+
+        <div class="data">
+          <h3>Last Login Time</h3>
+          <p>{{student.GInfo.lastLoginTime}}</p>
+        </div>
+
+          <div class="data">
+            <h3>Created At</h3>
+            <p>{{student.GInfo.creationTime}}</p>
+          </div>
+      </div>
+
+        <h2 *ngIf="student.GInfo.aliases">Aliases</h2>
+        <div class="row">
+        <div class="data" *ngFor="let alias of student.GInfo.aliases; let i = index">
+          <h3>{{i}}</h3>
+          <p>{{alias}}</p>
+        </div>
+      </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

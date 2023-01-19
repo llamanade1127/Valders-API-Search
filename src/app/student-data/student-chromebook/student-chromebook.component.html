@@ -1,0 +1,215 @@
+<div class="container">
+  <mat-card class="mat-elevation-z8">
+    <mat-card-title>
+      Chromebook Information
+    </mat-card-title>
+
+    <mat-card-content>
+      <div class="header">
+        <div class="left">
+          <h2>{{chromebook.model}}</h2>
+          <h2>{{chromebook.serialNumber}}</h2>
+        </div>
+
+        <h2>{{chromebook.annotatedAssetId}}</h2>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="table-container">
+        <div class="row">
+          <div class="data">
+            <h3>User</h3>
+            <p>{{chromebook.annotatedUser}}</p>
+          </div>
+
+          <div class="data">
+            <h3>OU</h3>
+            <p>{{chromebook.orgUnitPath}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Location</h3>
+            <p>{{chromebook.annotatedLocation}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Mac Address</h3>
+            <p>{{chromebook.macAddress}}</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="row">
+          <div class="data">
+            <h3>Last Known Network</h3>
+            <p>{{chromebook.lastKnownNetwork[0].ipAddress}}</p>
+          </div>
+
+          <div class="data">
+            <h3>Last Sync</h3>
+            <p>{{chromebook.lastSync}}</p>
+          </div>
+
+
+        </div>
+        <mat-divider></mat-divider>
+        <h2 *ngIf="chromebook.recentUsers">Recent Users</h2>
+        <div class="row">
+          <div class="data" *ngFor="let alias of chromebook.recentUsers; let i = index">
+            <h3>{{i + 1}}</h3>
+            <p><a routerLink="/student/{{alias.email}}">{{alias.email}}</a></p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <h2 *ngIf="chromebook.activeTimeRanges">Active Time Ranges</h2>
+        <div class="row">
+          <div class="data" *ngFor="let alias of chromebook.activeTimeRanges.reverse(); let i = index">
+            <h3>{{i + 1}}</h3>
+            <p> {{alias.date}} for {{round(alias.activeTime / 1000 / 60)}} minutes</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+
+
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Debug Data
+            </mat-panel-title>
+            <mat-panel-description>
+              Debug information about the chromebook
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+            <div class="data">
+              <h3>Boot Mode</h3>
+              <p>{{chromebook.bootMode}}</p>
+            </div>
+
+            <div class="data">
+              <h3>Auto Update Expiration</h3>
+              <p>{{chromebook.autoUpdateExpiration}}</p>
+            </div>
+
+            <div class="data">
+              <h3>Etag</h3>
+              <p>{{chromebook.etag}}</p>
+            </div>
+
+            <div class="data">
+              <h3>Firmware Version</h3>
+              <p>{{chromebook.firmwareVersion}}</p>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="data">
+              <h3>OS Version</h3>
+              <p>{{chromebook.osVersion}}</p>
+            </div>
+
+            <div class="data">
+              <h3>Platform Version</h3>
+              <p>{{chromebook.platformVersion}}</p>
+            </div>
+
+            <div class="data">
+              <h3>TPM Version Info</h3>
+              <p>{{chromebook.tpmVersionInfo.firmwareVersion}} : {{chromebook.tpmVersionInfo.tpmModel}}</p>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="chromebook.cpuInfo">
+
+            <div class="data">
+              <h3>CPU Model</h3>
+              <p>{{chromebook.cpuInfo[0].model}}</p>
+            </div>
+
+            <div class="data">
+              <h3>Architecture</h3>
+              <p>{{chromebook.cpuInfo[0].architecture}}</p>
+            </div>
+
+
+            <div class="data">
+              <h3>Max Clock Speed </h3>
+              <p>{{chromebook.cpuInfo[0].maxClockSpeedKhz}}Khz</p>
+            </div>
+          </div>
+
+
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h2>CPU Status Reports</h2>
+                </mat-panel-title>
+                <mat-panel-description>
+                  Status reports about the CPU of the chromebook
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div *ngFor="let alias of chromebook.cpuStatusReports; let i = index">
+                <h2>{{alias.reportTime}}</h2>
+
+
+                <h3>Temperature</h3>
+                <div class="row">
+                  <div class="data" *ngFor="let temp of alias.cpuTemperatureInfo; let i = index">
+                    <h3>{{i + 1}}</h3>
+                    <p> {{temp.temperature}} degrees</p>
+                  </div>
+                </div>
+                <h3>CPU Utilization</h3>
+                <div class="row">
+                  <div class="data" *ngFor="let temp of alias.cpuUtilizationPercentageInfo; let i = index">
+                    <h3>{{i + 1}}</h3>
+                    <p> {{temp}}%</p>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h2>Disk Status Reports</h2>
+                </mat-panel-title>
+                <mat-panel-description>
+                  Status reports about the Disk of the chromebook
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div *ngFor="let alias of chromebook.diskVolumeReports; let i = index">
+                <div class="row" *ngFor="let temp of alias.volumeInfo; let i = index">
+                  <div class="data">
+                    <h3>Storage Total</h3>
+                    <p> {{convertBytes(+temp.storageTotal)}}</p>
+                  </div>
+
+                  <div class="data">
+                    <h3>Storage Free</h3>
+                    <p> {{convertBytes(+temp.storageFree)}}</p>
+                  </div>
+
+                  <div class="data">
+                    <h3>Volume ID</h3>
+                    <p> {{temp.volumeId}}</p>
+                  </div>
+
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+          </mat-accordion>
+
+
+        </mat-expansion-panel>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
