@@ -40,10 +40,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
+.env
 # Release Files
 /Release
-
+/API
 /out
 /output
 /V1.1.zip

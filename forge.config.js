@@ -32,7 +32,7 @@ module.exports = {
     {
       name: '@electron-forge/publisher-github',
       config: {
-        authToken: "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",
+        authToken: process.env.GITHUB_TOKEN,
         repository: {
           owner: 'llamanade1127',
           name: 'Valders-API-Search'

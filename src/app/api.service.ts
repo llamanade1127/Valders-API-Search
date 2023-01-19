@@ -112,7 +112,6 @@ export class ApiService {
   }
   UpdateReturnParameters(student: Student, returnType:"ID" | "SERIAL" = "ID") {
     let sendData = this.ConvertFulltoReturnUser(student);
-    console.log(sendData)
     let headers = {
       //TODO: Needs to be given by server for release build
       'authorization': '123456'
@@ -142,7 +141,6 @@ export class ApiService {
 
   }
   CheckAdminPassword(password: string) {
-    console.log(password)
     let headers = {
       'authorization': password
     }
@@ -214,12 +212,12 @@ export class ApiService {
     return this.http.post<CreateTicketReturn>(`http://localhost:3000/tickets/create`,ticket, {headers: headers})
   }
 
-  QueryTicket(query:any){
+  QueryTicket(query:any, maxResults = 10){
     let headers = {
       'authorization': '123456'
     }
     //@ts-ignore
-    return this.http.get<TicketQueryReturn>(`http://localhost:3000/tickets/search?query=${JSON.stringify(query)}`, {headers: headers} )
+    return this.http.get<TicketQueryReturn>(`http://localhost:3000/tickets/search?query=${JSON.stringify(query)}&maxResults=${maxResults}`, {headers: headers} )
   }
 
   UpdateTicket(Ticket: Ticket) {
@@ -241,7 +239,7 @@ export class ApiService {
   }
 
   GetAllTickets() {
-    return this.QueryTicket("{}");
+    return this.QueryTicket("{}", 100);
   }
 
   QueryLoaners(query: string) {
@@ -272,8 +270,30 @@ export class ApiService {
   }
 
 
+  GetUserPhoto(email: string) {
+    let headers = {
+      'authorization': '123456'
+    }
+    //@ts-ignore
+    return this.http.get<PhotoRequest>(`http://localhost:3000/chromebooks/users/profile?q=${email}`, {headers: headers} )
 
+  }
 
+}
+export interface PhotoRequest {
+  time: string,
+  photo: UserPhoto;
+}
+
+export interface UserPhoto {
+  kind:         string;
+  id:           string;
+  etag:         string;
+  primaryEmail: string;
+  mimeType:     string;
+  height:       number;
+  width:        number;
+  photoData:    string;
 }
 
 export interface ConfigRequest {

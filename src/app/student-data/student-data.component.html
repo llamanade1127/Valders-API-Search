@@ -1,249 +1,82 @@
 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <div class="container" *ngIf="student">
+<h1>{{student.Name}}</h1>
+  <mat-tab-group dynamicHeight mat-stretch-tabs="true">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">face</mat-icon>
+        Student Information
+      </ng-template>
+      <app-student-information [student]="student"></app-student-information>
+    </mat-tab>
 
-  <!--Tickets-->
-  <mat-card *ngIf="ActiveTickets.length > 0 || CompletedTickets.length > 0">
-    <mat-card-title>Tickets</mat-card-title>
-    <mat-card-content class="small-card">
-      <div *ngIf="ActiveTickets.length > 0">
-        <h3>Active Tickets</h3>
-        <table class="table">
-          <tr *ngFor="let ticket of ActiveTickets">
-            <th>
-              <p class="tickets-table-title">{{ticket.deviceIssue == "NA" ? "Day Loaner" : ticket.deviceIssue}}<br/>{{ticket._id}}</p>
-            </th>
-            <td class="tickets-table-data">
-              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/active/{{ticket._id}}">
-                <button mat-raised-button color="accent">Go To Ticket</button>
-              </a>
-            </td>
-          </tr>
-        </table>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">devices</mat-icon>
+        Chromebook Information
+      </ng-template>
+      <app-student-chromebook [student]="student"></app-student-chromebook>
+    </mat-tab>
+
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">article</mat-icon>
+        Tickets
+      </ng-template>
+      <app-ticket-table [tickets]="ActiveTickets"></app-ticket-table>
+      <mat-divider></mat-divider>
+      <app-ticket-table [tickets]="CompletedTickets"></app-ticket-table>
+    </mat-tab>
+
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">manage_accounts</mat-icon>
+        Settings
+      </ng-template>
+
+      <div *ngIf="student">
+        <mat-card class="return-data-card">
+          <mat-card-title>
+            Return Data
+          </mat-card-title>
+          <mat-card-content class="return-container">
+            <p>
+              Returned Chromebook
+              <mat-checkbox [(ngModel)]="student.ReturnData.collectedChromebook"></mat-checkbox>
+            </p>
+            <p>
+              Returned Charger
+              <mat-checkbox [(ngModel)]="student.ReturnData.collectedCharger"></mat-checkbox>
+            </p>
+            <p>
+              Returned Case
+              <mat-checkbox [(ngModel)]="student.ReturnData.collectedCase"></mat-checkbox>
+            </p>
+            <div>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Notes</mat-label>
+                <textarea matInput placeholder="Ex. Case was damaged" [(ngModel)]="student.ReturnData.notes"></textarea>
+              </mat-form-field>
+
+
+            </div>
+
+            <div class="button-container">
+              <button mat-raised-button (click)="UpdateData()" color="accent">Update Values</button>
+              <button mat-raised-button color="warn" routerLink="/">Return to search</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
+    </mat-tab>
+  </mat-tab-group>
 
-      <div *ngIf="CompletedTickets.length > 0">
-        <h3>Completed Tickets</h3>
-        <table class="table">
-          <tr *ngFor="let ticket of CompletedTickets">
-            <th>
-              <p class="tickets-table-title">{{ticket.deviceIssue}} <br/>{{ticket._id}}</p>
-            </th>
-            <td class="tickets-table-data">
-              <a routerLink="/chromebook/{{ticket.damagedDeviceID}}/tickets/completed/{{ticket._id}}">
-                <button mat-raised-button color="accent">Go To Ticket</button>
-              </a>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-    </mat-card-content>
-  </mat-card>
-
-  <!--Chromebook-->
-  <mat-card>
-    <mat-card-title>
-      <h3>Chromebook: {{chromebook.serialNumber}}
-        <button mat-raised-button style="margin-left: 30px" color="accent">Edit.</button>
-      </h3>
-
-    </mat-card-title>
-
-    <mat-card-content>
-      <table class="table">
-
-        <tr>
-          <th class="table-title">
-            VASD Code
-          </th>
-          <td class="table-data">
-            {{chromebook.annotatedAssetId}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Serial Number
-          </th>
-          <td class="table-data">
-            {{chromebook.serialNumber}}
-            <!--button mat-raised-button [cdkCopyToClipboard]="chromebook.serialNumber" color="accent">Copy</button-->
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Last User
-          </th>
-          <td class="table-data">
-            {{chromebook.recentUsers[0].email}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            OU
-          </th>
-          <td class="table-data">
-            {{chromebook.orgUnitPath}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Model
-          </th>
-          <td class="table-data">
-            {{chromebook.model}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            MAC Address
-          </th>
-          <td class="table-data">
-            {{chromebook.macAddress.toUpperCase()}}
-          </td>
-        </tr>
-
-      </table>
-    </mat-card-content>
-  </mat-card>
-
-  <!--Google User-->
-  <mat-card *ngIf="user">
-    <mat-card-title>
-      <h3>User: {{user.id}}
-        <button mat-raised-button color="accent" style="margin-left: 30px"
-                (click)="isUpdatingStudent = !isUpdatingStudent">Edit.
-        </button>
-      </h3>
-
-    </mat-card-title>
-
-    <mat-card-content>
-      <table class="table">
-
-        <tr>
-          <th class="table-title">
-            Name
-          </th>
-          <td class="table-data">
-            {{user.name.fullName}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            ID
-          </th>
-          <td class="table-data">
-            {{user.id}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Emails
-          </th>
-          <td class="table-data" *ngFor="let email of user.emails">
-            {{email.address}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Is Suspended
-          </th>
-          <td class="table-data">
-            {{user.suspended}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            OU
-          </th>
-          <td class="table-data">
-            {{user.orgUnitPath}}
-          </td>
-        </tr>
-
-        <tr>
-          <th class="table-title">
-            Last Login Time
-          </th>
-          <td class="table-data">
-            {{user.lastLoginTime}}
-          </td>
-        </tr>
-
-      </table>
-      <button mat-raised-button color="warn" style="margin-left: 5px" (click)="RemoveStudent()">Remove User from Student</button>
-
-
-    </mat-card-content>
-
-
-  </mat-card>
-
-  <mat-card *ngIf="isUpdatingStudent || !user">
-    <mat-card-title>
-      Update User
-    </mat-card-title>
-    <mat-card-content>
-      <div class="flex">
-
-        <mat-button-toggle-group [(ngModel)]="studentSearchType" class="form-element">
-          <mat-button-toggle value="primaryEmail">Primary Email</mat-button-toggle>
-          <mat-button-toggle value="ID">User ID</mat-button-toggle>
-        </mat-button-toggle-group>
-        <mat-form-field class="example-form-field" appearance="fill" class="form-element">
-          <mat-label>New Student ID</mat-label>
-          <input matInput type="text" [(ngModel)]="newStudentID" placeholder="email@student.valders.k12.wi.us">
-        </mat-form-field>
-        <button mat-raised-button matRipple (click)="UpdateStudentID()" class="form-element">Update ID</button>
-      </div>
-    </mat-card-content>
-  </mat-card>
 
 
 
 </div>
 <!--Return Data-->
 
-<div *ngIf="student">
-  <mat-card class="return-data-card">
-    <mat-card-title>
-      Return Data
-    </mat-card-title>
-    <mat-card-content class="return-container">
-      <p>
-        Returned Chromebook
-        <mat-checkbox [(ngModel)]="student.ReturnData.collectedChromebook"></mat-checkbox>
-      </p>
-      <p>
-        Returned Charger
-        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCharger"></mat-checkbox>
-      </p>
-      <p>
-        Returned Case
-        <mat-checkbox [(ngModel)]="student.ReturnData.collectedCase"></mat-checkbox>
-      </p>
-      <div>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Notes</mat-label>
-          <textarea matInput placeholder="Ex. Case was damaged" [(ngModel)]="student.ReturnData.notes"></textarea>
-        </mat-form-field>
-
-
-      </div>
-
-      <div class="button-container">
-        <button mat-raised-button (click)="UpdateData()" color="accent">Update Values</button>
-        <button mat-raised-button color="warn" routerLink="/">Return to search</button>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</div>

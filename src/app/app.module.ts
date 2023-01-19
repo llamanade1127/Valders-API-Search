@@ -56,6 +56,10 @@ import { AllLoanersComponent } from './home/tables/all-loaners/all-loaners.compo
 import { CompletedTicketsComponent } from './home/tables/completed-tickets/completed-tickets.component';
 import { ConfigSettingsComponent } from './home/config-settings/config-settings.component';
 import {UpdateAdminPasswordDialog} from "./home/config-settings/dialog/admin-dialog";
+import { StudentInformationComponent } from './student-data/student-information/student-information.component';
+import { StudentChromebookComponent } from './student-data/student-chromebook/student-chromebook.component';
+import { TicketTableComponent } from './Templates/ticket-table/ticket-table.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -85,7 +89,10 @@ import {UpdateAdminPasswordDialog} from "./home/config-settings/dialog/admin-dia
     LoanersComponent,
     AllLoanersComponent,
     CompletedTicketsComponent,
-    ConfigSettingsComponent
+    ConfigSettingsComponent,
+    StudentInformationComponent,
+    StudentChromebookComponent,
+    TicketTableComponent
   ],
     imports: [
         BrowserModule,
@@ -121,7 +128,8 @@ import {UpdateAdminPasswordDialog} from "./home/config-settings/dialog/admin-dia
         MatMenuModule,
         MatSortModule,
         MatTabsModule,
-      NgxPrintModule
+        NgxPrintModule,
+        MatExpansionModule
     ],
   providers: [],
   bootstrap: [AppComponent]

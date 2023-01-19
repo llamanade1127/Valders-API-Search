@@ -1,6 +1,6 @@
 {
 	"name": "valders-api",
-	"version": "3.0.1",
+	"version": "3.0.2",
 	"description": "API for the school of valders. Must have a valid token",
 	"main": "index.js",
 	"scripts": {

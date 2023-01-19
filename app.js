@@ -10,7 +10,7 @@ let mainWindow
 
 let githubUsername = 'llamanade1127';
 let githubRepo = 'Valders-API';
-let token = "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";
+let token = "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";
 async function UpdateAPI(res) {
   let fileResponse = await axios({
     url: res['assets'][0].url,
@@ -83,11 +83,13 @@ async function CheckAPI() {
   } else {
 
 
-    let meta = fs.readFileSync(`./API/package.json`).toString();
-    let version = res.data['tag_name'].slice(0,1).split('.');
-
+    let meta = (JSON.parse(fs.readFileSync(`./API/package.json`).toString())).version.split('.');
+    let version = res.data['tag_name'].slice(1).split('.')
+    console.log(meta);
+    console.log(version);
     for(let i = 0; i < version.length; i++) {
-      if(+version[i] > meta[i]) {
+      if(+version[i] > +meta[i]) {
+        console.log("Updating")
         await UpdateAPI(res.data);
         break;
       }

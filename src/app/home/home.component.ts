@@ -55,6 +55,9 @@ export class HomeComponent implements OnInit {
     this.tickets = this.oTickets.subscribe();
     this.dayLoaners = this.oActiveDayLoaners.subscribe();
 
+    this.updateTickets();
+    this.loop();
+
   }
 
   applyFilter(event: Event) {
@@ -62,92 +65,79 @@ export class HomeComponent implements OnInit {
 
   }
 
-  removeDuplicateObjectFromArray(array: any[], key: string) {
-    let check = {};
-    let res = [];
-    for(let i=0; i<array.length; i++) {
-      // @ts-ignore
-      if(!check[array[i][key]]){
-        //@ts-ignore
-        check[array[i][key]] = true;
-        res.push(array[i]);
+  loop() {
+    setTimeout(() => {
+      try {
+        this.updateTickets()
+        this.loop();
+      }catch(e) {
+        console.log(e);
+        setTimeout(() => this.loop(), 30*1000)
       }
-    }
-    return res;
+
+    }, 5*1000)
   }
 
-  updateTickets(sub: Subscriber<Ticket[]>) {
-    setTimeout(() => {
-      this.api.GetAllTickets().subscribe((response) => {
-        let t = response.tickets;
+  updateTickets() {
+    this.api.QueryTicket({isCurrentlyActive: true}, 20).subscribe((response) => {
+      let t = response.tickets;
 
-        this.dataAllTickets.push(...t);
-        this.dataAllTickets = this.removeDuplicateObjectFromArray(this.dataAllTickets, '_id');
+      let dayLoaners = t.filter((t) => t.ticketIssue == "Day Loaner");
+      let c = t.filter((t) => t.ticketIssue != "Day Loaner");
 
-        let c = t.filter((t) => {return t.ticketIssue != "Day Loaner" && t.isCurrentlyActive})
-        let d  = t.filter((t) => !t.isCurrentlyActive);
+      const sort = (a: Ticket,b: Ticket) => {
+        if (a.created != null && b.created != null) {
+          let aDate = new Date(`${a.created}`);
+          let bDate = new Date(`${b.created}`);
+          return -(aDate.getTime() - bDate.getTime());
+        } else
+          return 0;
+      }
 
-        const sort = (a: Ticket,b: Ticket) => {
-          if (a.created != null && b.created != null) {
-            let aDate = new Date(`${a.created}`);
-            let bDate = new Date(`${b.created}`);
-            return -(aDate.getTime() - bDate.getTime());
-          } else
-            return 0;
-        }
+      c?.sort(sort);
+      dayLoaners.sort(sort);
+      this.ticketCount = c.length;
+      this.dayLoanerCount = dayLoaners.length;
 
-        c?.sort(sort);
-        d?.sort(sort);
-        this.ticketCount = c.length;
+      let count = 0;
+      let now = new Date(Date.now())
+      for(let i = 0; i < c.length; i++) {
+        let d = new Date(`${c[i].created}`)
+        if(now.getFullYear() == d.getFullYear() && now.getMonth() == d.getMonth() && now.getDate() == d.getDate())
+          ++count;
+      }
+      this.numberToday = count;
 
-        let count = 0;
-        let now = new Date(Date.now())
-        for(let i = 0; i < c.length; i++) {
-          let d = new Date(`${c[i].created}`)
-          if(now.getFullYear() == d.getFullYear() && now.getMonth() == d.getMonth() && now.getDate() == d.getDate())
-            ++count;
-        }
-        this.numberToday = count;
-
-        sub.next(t);
-
-        this.dataTickets = c;
-        this.dataCompletedTickets = d;
-        this.updateTickets(sub);
-      })
-    }, 1000)
+      this.dataDayLoaner = this.convertToDayLoaner(dayLoaners);
+      this.dataTickets = c;
+    })
 
   }
 
-  updateActiveTickets(sub: Subscriber<DayLoaner[]>) {
-    setTimeout(() => {
-      this.api.GetAllTickets().subscribe((response) => {
-        let t = response.tickets;
-        t = t.filter((t) => {return t.ticketIssue == "Day Loaner" && t.isCurrentlyActive});
-        t?.sort((a,b) => {
-          if (a.created != null && b.created != null) {
-            let aDate = new Date(`${a.created}`);
-            let bDate = new Date(`${b.created}`);
-            console.log(aDate.getTime() - bDate.getTime() > 0)
-            return -(aDate.getTime() - bDate.getTime());
-          } else
-            return 0;
+  convertToDayLoaner(t: Ticket[]) {
+    let dayLoaners: DayLoaner[] = [];
+    const now = new Date(Date.now())
+    for (let i = 0; i < t.length; i++) {
+      let time = new Date(`${t[i].created}`)
+      if(now.getFullYear() == time.getFullYear() && now.getMonth() == time.getMonth() && now.getDate() == time.getDate())
+      {
+        dayLoaners.push({
+          ticket: t[i],
+          name: t[i].studentName,
+          fresh: true
         })
+      } else {
+        dayLoaners.push({
+          ticket: t[i],
+          name: t[i].studentName,
+          fresh: false
+        })
+      }
 
-        let d: DayLoaner[] = [];
-        for(let i = 0; i < t.length; i++) {
-          d.push({fresh: this.IsOld(t[i]), ticket: t[i], name: t[i].studentName});
-        }
-        this.dayLoanerCount = d.length;
-        this.dataDayLoaner = d;
-        sub.next(d);
+    }
 
-        this.updateActiveTickets(sub);
-      })
-    },  1000)
-
+    return dayLoaners;
   }
-
 
   sortByIssue(tickets: Ticket[] ,isDayLoaner = false) {
     let t: Ticket[] = [];

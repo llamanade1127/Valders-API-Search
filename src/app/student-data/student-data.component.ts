@@ -107,6 +107,7 @@ export class StudentDataComponent implements OnInit {
     });
   }
 
+  //@ts-ignore
   get Notes(){
     return this.form.get("Notes");
   }

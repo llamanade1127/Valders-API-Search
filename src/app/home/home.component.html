@@ -3,10 +3,15 @@
 
 <div class="container">
 
-  <mat-tab-group>
-    <mat-tab label="Active">
+  <mat-tab-group mat-stretch-tabs="true" [color]="'warn'" backgroundColor="primary">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">article</mat-icon>
+        Active Tickets
+      </ng-template>
+
       <div *ngIf="!isLoading && (oTickets | async)?.length != 0" class="Active-Tickets" >
-        <mat-card color="accent">
+        <mat-card>
           <mat-card-content>
             <h2>Active Tickets</h2>
             <table mat-table [dataSource]="dataTickets" matSort matSortActive="created" matSortDisableClear matSortDirection="desc" class="mat-elevation-z8">
@@ -122,7 +127,11 @@
       </div>
 
     </mat-tab>
-    <mat-tab label="Completed">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">done_all</mat-icon>
+        Completed Tickets
+      </ng-template>
       <div>
         <mat-card>
          <app-completed-tickets></app-completed-tickets>
@@ -130,7 +139,11 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="All Tickets">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">space_dashboard</mat-icon>
+        All Tickets
+      </ng-template>
       <mat-card color="accent">
         <mat-card-content>
           <app-all-loaners></app-all-loaners>
@@ -138,14 +151,22 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Loaners">
+    <mat-tab >
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">devices</mat-icon>
+        Loaners
+      </ng-template>
       <mat-card>
         <app-loaners></app-loaners>
       </mat-card>
 
     </mat-tab>
 
-    <mat-tab label="Settings">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">settings</mat-icon>
+        Settings
+      </ng-template>
       <mat-card>
         <mat-card-title>
           Config Settings
